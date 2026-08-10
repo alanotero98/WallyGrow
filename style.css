@@ -1,0 +1,16 @@
+/*
+Theme Name: Wally Grow Child
+Theme URI: https://example.com/wally-grow-child
+Description: Child theme for Blocksy, prepared for Gutenberg, WooCommerce and future customizations.
+Author: Wally Grow
+Template: blocksy
+Version: 1.2.0
+Requires at least: 6.4
+Tested up to: 6.6
+Requires PHP: 7.4
+Text Domain: wally-grow-child
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+*/
+
+/* Component and page styles live in assets/css/child.css. */

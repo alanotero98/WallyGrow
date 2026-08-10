@@ -1,0 +1,255 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "useRootPaddingAwareAlignments": true,
+    "layout": {
+      "contentSize": "840px",
+      "wideSize": "1280px"
+    },
+    "color": {
+      "custom": false,
+      "customDuotone": false,
+      "customGradient": false,
+      "defaultDuotone": false,
+      "defaultGradients": false,
+      "defaultPalette": false,
+      "palette": [
+        { "slug": "primary", "color": "#1fa34a", "name": "Verde Wally" },
+        { "slug": "primary-hover", "color": "#08752f", "name": "Verde Wally oscuro" },
+        { "slug": "secondary", "color": "#5c5f60", "name": "Gris secundario" },
+        { "slug": "accent", "color": "#166534", "name": "Acento botánico" },
+        { "slug": "foreground", "color": "#111827", "name": "Carbón" },
+        { "slug": "muted", "color": "#3e4a3d", "name": "Texto suave" },
+        { "slug": "background", "color": "#ffffff", "name": "Blanco" },
+        { "slug": "surface", "color": "#f9fafb", "name": "Superficie" },
+        { "slug": "surface-strong", "color": "#f3f4f6", "name": "Superficie marcada" },
+        { "slug": "border", "color": "#e5e7eb", "name": "Borde" },
+        { "slug": "success-soft", "color": "#dcfce7", "name": "Verde suave" },
+        { "slug": "error", "color": "#ba1a1a", "name": "Error" }
+      ]
+    },
+    "spacing": {
+      "blockGap": true,
+      "customSpacingSize": false,
+      "defaultSpacingSizes": false,
+      "spacingSizes": [
+        { "slug": "10", "size": "8px", "name": "1 — 8 px" },
+        { "slug": "20", "size": "16px", "name": "2 — 16 px" },
+        { "slug": "30", "size": "24px", "name": "3 — 24 px" },
+        { "slug": "40", "size": "32px", "name": "4 — 32 px" },
+        { "slug": "50", "size": "48px", "name": "5 — 48 px" },
+        { "slug": "60", "size": "64px", "name": "6 — 64 px" },
+        { "slug": "70", "size": "80px", "name": "7 — 80 px" },
+        { "slug": "80", "size": "120px", "name": "8 — 120 px" }
+      ],
+      "units": ["%", "px", "em", "rem", "vh", "vw"]
+    },
+    "typography": {
+      "customFontSize": false,
+      "defaultFontSizes": false,
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "fontFamily": "Manrope, Arial, sans-serif",
+          "name": "Manrope",
+          "slug": "manrope"
+        },
+        {
+          "fontFamily": "\"Hanken Grotesk\", Arial, sans-serif",
+          "name": "Hanken Grotesk",
+          "slug": "hanken-grotesk"
+        }
+      ],
+      "fontSizes": [
+        { "slug": "caption", "size": "12px", "name": "Caption" },
+        { "slug": "label", "size": "14px", "name": "Etiqueta" },
+        { "slug": "body", "size": "16px", "name": "Texto" },
+        { "slug": "body-large", "size": "18px", "name": "Texto grande" },
+        { "slug": "heading-small", "size": "24px", "name": "Título pequeño" },
+        { "slug": "heading", "size": "30px", "name": "Título" },
+        {
+          "slug": "display",
+          "size": "48px",
+          "name": "Display",
+          "fluid": { "min": "32px", "max": "48px" }
+        }
+      ]
+    },
+    "border": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var:preset|color|background",
+      "text": "var:preset|color|foreground"
+    },
+    "spacing": {
+      "blockGap": "24px",
+      "padding": {
+        "left": "var:preset|spacing|30",
+        "right": "var:preset|spacing|30"
+      }
+    },
+    "typography": {
+      "fontFamily": "var:preset|font-family|hanken-grotesk",
+      "fontSize": "var:preset|font-size|body",
+      "fontStyle": "normal",
+      "fontWeight": "400",
+      "lineHeight": "1.5"
+    },
+    "elements": {
+      "button": {
+        "border": {
+          "color": "var:preset|color|primary",
+          "radius": "4px",
+          "style": "solid",
+          "width": "1px"
+        },
+        "color": {
+          "background": "var:preset|color|primary",
+          "text": "var:preset|color|background"
+        },
+        "spacing": {
+          "padding": {
+            "top": "13px",
+            "right": "22px",
+            "bottom": "13px",
+            "left": "22px"
+          }
+        },
+        "typography": {
+          "fontFamily": "var:preset|font-family|hanken-grotesk",
+          "fontSize": "var:preset|font-size|label",
+          "fontWeight": "600",
+          "lineHeight": "1.4"
+        }
+      },
+      "caption": {
+        "color": { "text": "var:preset|color|secondary" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|hanken-grotesk",
+          "fontSize": "var:preset|font-size|caption",
+          "fontWeight": "500",
+          "lineHeight": "1.333"
+        }
+      },
+      "h1": {
+        "color": { "text": "var:preset|color|foreground" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|manrope",
+          "fontSize": "var:preset|font-size|display",
+          "fontWeight": "700",
+          "letterSpacing": "-0.02em",
+          "lineHeight": "1.166"
+        }
+      },
+      "h2": {
+        "color": { "text": "var:preset|color|foreground" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|manrope",
+          "fontSize": "30px",
+          "fontWeight": "600",
+          "letterSpacing": "-0.01em",
+          "lineHeight": "1.267"
+        }
+      },
+      "h3": {
+        "color": { "text": "var:preset|color|foreground" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|manrope",
+          "fontSize": "24px",
+          "fontWeight": "600",
+          "lineHeight": "1.333"
+        }
+      },
+      "h4": {
+        "color": { "text": "var:preset|color|foreground" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|manrope",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "lineHeight": "1.4"
+        }
+      },
+      "h5": {
+        "color": { "text": "var:preset|color|foreground" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|manrope",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "lineHeight": "1.45"
+        }
+      },
+      "h6": {
+        "color": { "text": "var:preset|color|foreground" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|hanken-grotesk",
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "letterSpacing": "0.05em",
+          "lineHeight": "1.43",
+          "textTransform": "uppercase"
+        }
+      },
+      "heading": {
+        "color": { "text": "var:preset|color|foreground" },
+        "typography": {
+          "fontFamily": "var:preset|font-family|manrope"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "var:preset|color|primary"
+        },
+        "typography": {
+          "textDecoration": "none"
+        }
+      }
+    },
+    "blocks": {
+      "core/button": {
+        "border": { "radius": "4px" }
+      },
+      "core/image": {
+        "border": { "radius": "8px" }
+      },
+      "core/pullquote": {
+        "border": {
+          "color": "var:preset|color|primary",
+          "style": "solid",
+          "width": "3px"
+        }
+      },
+      "core/quote": {
+        "border": {
+          "color": "var:preset|color|primary",
+          "style": "solid",
+          "width": "0 0 0 3px"
+        },
+        "color": { "text": "var:preset|color|muted" }
+      },
+      "core/separator": {
+        "color": { "background": "var:preset|color|border" }
+      },
+      "core/table": {
+        "border": {
+          "color": "var:preset|color|border",
+          "style": "solid",
+          "width": "1px"
+        }
+      }
+    }
+  },
+  "customTemplates": [
+    {
+      "name": "home",
+      "title": "Home"
+    }
+  ]
+}
