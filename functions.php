@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 $wally_grow_theme = wp_get_theme(get_stylesheet());
 define(
     'WALLY_GROW_CHILD_VERSION',
-    $wally_grow_theme->exists() ? (string) $wally_grow_theme->get('Version') : '1.2.8'
+    $wally_grow_theme->exists() ? (string) $wally_grow_theme->get('Version') : '0'
 );
 
 /**
@@ -52,6 +52,7 @@ if (!defined('WALLY_GROW_CONTACT_EMAIL')) {
 }
 
 require_once get_stylesheet_directory() . '/inc/contact.php';
+require_once get_stylesheet_directory() . '/inc/branding.php';
 
 if (!function_exists('wally_grow_child_setup')) {
     function wally_grow_child_setup() {

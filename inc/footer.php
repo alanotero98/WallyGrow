@@ -146,9 +146,16 @@ function wally_grow_render_global_footer() {
                             false,
                             array(
                                 'class' => 'wg-global-footer__logo',
-                                'alt' => $site_name,
+                                'alt' => '',
                                 'loading' => 'lazy',
                             )
+                        ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
+                    <?php else : ?>
+                        <?php
+                        echo wally_grow_get_brand_icon_markup(
+                            'wg-global-footer__logo',
+                            'lazy'
                         ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         ?>
                     <?php endif; ?>

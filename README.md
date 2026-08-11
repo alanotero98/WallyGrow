@@ -75,6 +75,18 @@ Ver [docs/desarrollo/checklist-cliente.md](docs/desarrollo/checklist-cliente.md)
 La identidad se divide en tres capas para evitar valores duplicados y conservar
 compatibilidad entre Blocksy y Gutenberg.
 
+### Isotipo y wordmark
+
+El isotipo de Wally vive en
+`assets/images/branding/wally-isotipo.png` con fondo transparente:
+
+- El header lo muestra junto al nombre del sitio mientras no exista un logo
+  personalizado configurado en WordPress.
+- El footer reutiliza el mismo isotipo como imagen decorativa junto al wordmark.
+- Se usa como favicon de respaldo mientras no exista un Site Icon configurado.
+- Un logo o Site Icon cargado por el cliente reemplaza automáticamente el
+  fallback correspondiente.
+
 ### Blocksy
 
 El child theme redefine las variables públicas de Blocksy en
