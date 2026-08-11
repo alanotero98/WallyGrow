@@ -53,8 +53,22 @@ cuatro productos publicados más recientes.
 
 ## Alcance
 
-No se modificaron WordPress Core, WooCommerce Core ni Blocksy. Las plantillas
-Shop, Single Product y Cart continúan fuera del alcance de esta etapa.
+No se modifican WordPress Core, WooCommerce Core ni Blocksy.
+
+**En esta etapa del child theme:**
+
+- Home (patrón Gutenberg), identidad (`theme.json` + CSS), footer global
+- Shop / archivos de categoría (header, búsqueda, columnas, sidebar condicional)
+- Búsqueda de productos (Shop + formulario de búsqueda del tema/header)
+- CTA WhatsApp en ficha de producto (solo si hay número configurado)
+
+**Fuera de alcance del child (Woo/Blocksy/config del cliente):**
+
+- Personalización profunda de Cart / Checkout / Mi cuenta
+- Plugins de pago (Mercado Pago) y tarifas de envío reales
+- Contenido de productos, legales y copy definitivo
+
+Ver [docs/desarrollo/checklist-cliente.md](docs/desarrollo/checklist-cliente.md).
 
 ## Identidad visual global
 

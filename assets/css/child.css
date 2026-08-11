@@ -1256,3 +1256,29 @@ a:focus {
 		grid-template-columns: 1fr;
 	}
 }
+
+/* Single product — WhatsApp advisory CTA (hidden until configured). */
+.wg-product-whatsapp {
+	margin: 16px 0 0;
+}
+
+.wg-product-whatsapp__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-width: 320px;
+	min-height: 44px;
+	padding: 10px 18px;
+	border-radius: 4px;
+	background: var(--theme-palette-color-1, #1fa34a);
+	color: #fff !important;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.wg-product-whatsapp__button:hover,
+.wg-product-whatsapp__button:focus-visible {
+	background: var(--theme-palette-color-2, #08752f);
+	color: #fff !important;
+}
