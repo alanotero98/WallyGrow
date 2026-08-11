@@ -3,6 +3,22 @@
 Child theme de Blocksy para Gutenberg y WooCommerce. La Home implementada toma
 `/docs/DESIGN.md` y `/docs/screen.png` como referencia visual.
 
+## Quick start (Docker)
+
+```powershell
+cp .env.example .env
+docker compose up -d
+.\scripts\setup-local.ps1
+```
+
+- Sitio: http://localhost:8082
+- phpMyAdmin: http://localhost:8083
+- Admin local: `admin` / `admin`
+
+El directorio del repo se monta como tema `wally-grow-child` (cambios en caliente).
+
+Ver también [AGENTS.md](AGENTS.md).
+
 ## Home
 
 - `front-page.php`: muestra el contenido Gutenberg de la portada. Si la página

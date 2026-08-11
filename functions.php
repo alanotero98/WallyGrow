@@ -10,11 +10,16 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('WALLY_GROW_CHILD_VERSION', '1.2.7');
+$wally_grow_theme = wp_get_theme(get_stylesheet());
+define(
+    'WALLY_GROW_CHILD_VERSION',
+    $wally_grow_theme->exists() ? (string) $wally_grow_theme->get('Version') : '1.2.8'
+);
 
 /**
- * WhatsApp number in international format, using digits only.
- * Example format: country code + area code + number.
+ * WhatsApp number in international format, digits only.
+ * Override in wp-config.php: define('WALLY_GROW_WHATSAPP_NUMBER', '54911...');
+ * Optional full URL override: define('WALLY_GROW_WHATSAPP_URL', 'https://wa.me/...');
  */
 if (!defined('WALLY_GROW_WHATSAPP_NUMBER')) {
     define('WALLY_GROW_WHATSAPP_NUMBER', '');
@@ -38,6 +43,8 @@ if (!defined('WALLY_GROW_GOOGLE_REVIEWS_URL')) {
     define('WALLY_GROW_GOOGLE_REVIEWS_URL', '');
 }
 
+require_once get_stylesheet_directory() . '/inc/contact.php';
+
 if (!function_exists('wally_grow_child_setup')) {
     function wally_grow_child_setup() {
         load_theme_textdomain('wally-grow-child', get_stylesheet_directory() . '/languages');
@@ -51,6 +58,7 @@ if (!function_exists('wally_grow_child_setup')) {
             'flex-width' => true,
         ));
         add_theme_support('editor-styles');
+        add_editor_style('assets/css/fonts.css');
         add_editor_style('assets/css/editor.css');
 
         add_theme_support('align-wide');
@@ -58,11 +66,6 @@ if (!function_exists('wally_grow_child_setup')) {
         add_theme_support('wp-block-styles');
         add_theme_support('custom-spacing');
         add_theme_support('html5', array('search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script'));
-
-        add_theme_support('woocommerce');
-        add_theme_support('wc-product-gallery-zoom');
-        add_theme_support('wc-product-gallery-lightbox');
-        add_theme_support('wc-product-gallery-slider');
 
         register_nav_menus(array(
             'primary' => __('Primary Menu', 'wally-grow-child'),
@@ -75,9 +78,9 @@ if (!function_exists('wally_grow_child_enqueue_assets')) {
     function wally_grow_child_enqueue_assets() {
         wp_enqueue_style(
             'wally-grow-fonts',
-            'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;600;700&display=swap',
+            get_stylesheet_directory_uri() . '/assets/css/fonts.css',
             array(),
-            null
+            WALLY_GROW_CHILD_VERSION
         );
 
         wp_enqueue_style(
@@ -90,7 +93,7 @@ if (!function_exists('wally_grow_child_enqueue_assets')) {
         wp_enqueue_style(
             'wally-grow-child-style',
             get_stylesheet_uri(),
-            array('blocksy-parent-style'),
+            array('blocksy-parent-style', 'wally-grow-fonts'),
             WALLY_GROW_CHILD_VERSION
         );
 
@@ -101,20 +104,23 @@ if (!function_exists('wally_grow_child_enqueue_assets')) {
             WALLY_GROW_CHILD_VERSION
         );
 
-        wp_enqueue_script(
-            'wally-grow-child-script',
-            get_stylesheet_directory_uri() . '/assets/js/child.js',
-            array(),
-            WALLY_GROW_CHILD_VERSION,
-            true
-        );
+        $child_js = get_stylesheet_directory() . '/assets/js/child.js';
+        if (is_readable($child_js) && filesize($child_js) > 80) {
+            wp_enqueue_script(
+                'wally-grow-child-script',
+                get_stylesheet_directory_uri() . '/assets/js/child.js',
+                array(),
+                WALLY_GROW_CHILD_VERSION,
+                true
+            );
+        }
     }
 }
 add_action('wp_enqueue_scripts', 'wally_grow_child_enqueue_assets');
 
 /**
- * Blocksy's Customizer currently requests Open Sans. The brand fonts above
- * replace it globally, so the unused request can be removed safely.
+ * Blocksy's Customizer may still request Open Sans. Brand fonts replace it,
+ * so the unused Google request can be removed safely.
  */
 add_action('wp_enqueue_scripts', function () {
     wp_dequeue_style('blocksy-fonts-font-source-google');
@@ -126,6 +132,9 @@ add_action('wp_enqueue_scripts', function () {
  * The extension was rendering the default "Hello world!" post immediately
  * before the global footer. Pointing its output at an unused hook prevents
  * that entire section from being added to public pages.
+ *
+ * Safety net: Companion historically attaches at priority 50 on
+ * blocksy:template:after. Re-test after Companion updates.
  */
 add_filter('theme_mod_trending_block_location', function () {
     return 'wally_grow:disabled_trending_block';

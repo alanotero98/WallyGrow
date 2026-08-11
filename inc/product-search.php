@@ -104,7 +104,35 @@ function wally_grow_product_search_shortcode() {
 }
 add_shortcode('wally_product_search', 'wally_grow_product_search_shortcode');
 
+/**
+ * Simple IP rate limit for the public product-search REST route.
+ *
+ * @return true|WP_Error
+ */
+function wally_grow_rest_product_search_rate_limit() {
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : 'unknown';
+    $key = 'wg_ps_' . md5($ip);
+    $hits = (int) get_transient($key);
+
+    // ~30 requests / minute per IP (autocomplete with debounce still fits).
+    if ($hits >= 30) {
+        return new WP_Error(
+            'wally_grow_rate_limited',
+            __('Demasiadas búsquedas. Probá de nuevo en un momento.', 'wally-grow-child'),
+            array('status' => 429)
+        );
+    }
+
+    set_transient($key, $hits + 1, MINUTE_IN_SECONDS);
+    return true;
+}
+
 function wally_grow_rest_product_search(WP_REST_Request $request) {
+    $rate = wally_grow_rest_product_search_rate_limit();
+    if (is_wp_error($rate)) {
+        return $rate;
+    }
+
     $query = sanitize_text_field((string) $request->get_param('q'));
 
     if (mb_strlen($query) < 2) {
@@ -139,18 +167,10 @@ function wally_grow_rest_product_search(WP_REST_Request $request) {
         }
 
         $category_names = wp_get_post_terms($product->get_id(), 'product_cat', array('fields' => 'names'));
-        $stock = '';
-
-        if (!$product->is_in_stock()) {
-            $stock = __('Sin stock', 'wally-grow-child');
-        } elseif ($product->managing_stock() && null !== $product->get_stock_quantity()) {
-            $stock = sprintf(
-                _n('%d disponible', '%d disponibles', $product->get_stock_quantity(), 'wally-grow-child'),
-                $product->get_stock_quantity()
-            );
-        } else {
-            $stock = __('En stock', 'wally-grow-child');
-        }
+        $in_stock = $product->is_in_stock();
+        $stock = $in_stock
+            ? __('En stock', 'wally-grow-child')
+            : __('Sin stock', 'wally-grow-child');
 
         $image_id = $product->get_image_id();
         $results[] = array(
@@ -167,7 +187,7 @@ function wally_grow_rest_product_search(WP_REST_Request $request) {
             ),
             'category' => !is_wp_error($category_names) ? implode(', ', array_slice($category_names, 0, 2)) : '',
             'stock' => $stock,
-            'inStock' => $product->is_in_stock(),
+            'inStock' => $in_stock,
         );
     }
 

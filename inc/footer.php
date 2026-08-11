@@ -12,6 +12,25 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Link to a published page by path, or null when missing.
+ *
+ * @param string $path Page path without leading slash.
+ * @param string $label Link label.
+ * @return array{label:string,url:string}|null
+ */
+function wally_grow_footer_page_link($path, $label) {
+    $page = get_page_by_path($path);
+    if (!$page instanceof WP_Post || $page->post_status !== 'publish') {
+        return null;
+    }
+
+    return array(
+        'label' => $label,
+        'url' => get_permalink($page),
+    );
+}
+
+/**
  * Central footer content.
  *
  * Developers can adjust all footer labels and links here, or filter the array
@@ -20,30 +39,51 @@ if (!defined('ABSPATH')) {
 function wally_grow_get_footer_content() {
     $shop_url = function_exists('wc_get_page_permalink')
         ? wc_get_page_permalink('shop')
-        : home_url('/tienda/');
+        : home_url('/');
+
+    $category_links = array_values(array_filter(array(
+        array(
+            'label' => __('Iluminación LED', 'wally-grow-child'),
+            'url' => wally_grow_product_cat_url(array('iluminacion', 'iluminacion-led', 'lighting'), $shop_url),
+        ),
+        array(
+            'label' => __('Fertilizantes orgánicos', 'wally-grow-child'),
+            'url' => wally_grow_product_cat_url(array('nutrientes', 'fertilizantes', 'fertilizantes-organicos'), $shop_url),
+        ),
+        array(
+            'label' => __('Carpas y cultivo indoor', 'wally-grow-child'),
+            'url' => wally_grow_product_cat_url(array('carpas', 'cultivo-indoor', 'indoor'), $shop_url),
+        ),
+        array(
+            'label' => __('Accesorios de medición', 'wally-grow-child'),
+            'url' => wally_grow_product_cat_url(array('accesorios', 'medicion', 'herramientas'), $shop_url),
+        ),
+    )));
+
+    $help_links = array_values(array_filter(array(
+        wally_grow_footer_page_link('preguntas-frecuentes', __('Preguntas frecuentes', 'wally-grow-child')),
+        wally_grow_footer_page_link('politica-de-envios', __('Política de envíos', 'wally-grow-child')),
+        wally_grow_footer_page_link('terminos-y-condiciones', __('Términos y condiciones', 'wally-grow-child')),
+        wally_grow_footer_page_link('soporte-tecnico', __('Soporte técnico', 'wally-grow-child')),
+    )));
+
+    $columns = array();
+    if ($category_links) {
+        $columns[] = array(
+            'title' => __('Categorías', 'wally-grow-child'),
+            'links' => $category_links,
+        );
+    }
+    if ($help_links) {
+        $columns[] = array(
+            'title' => __('Ayuda', 'wally-grow-child'),
+            'links' => $help_links,
+        );
+    }
 
     $content = array(
         'description' => __('Botanical Excellence. Tu socio profesional en el cultivo indoor y exterior. Tecnología, asesoramiento y calidad.', 'wally-grow-child'),
-        'columns' => array(
-            array(
-                'title' => __('Categorías', 'wally-grow-child'),
-                'links' => array(
-                    array('label' => __('Iluminación LED', 'wally-grow-child'), 'url' => $shop_url),
-                    array('label' => __('Fertilizantes orgánicos', 'wally-grow-child'), 'url' => $shop_url),
-                    array('label' => __('Carpas y cultivo indoor', 'wally-grow-child'), 'url' => $shop_url),
-                    array('label' => __('Accesorios de medición', 'wally-grow-child'), 'url' => $shop_url),
-                ),
-            ),
-            array(
-                'title' => __('Ayuda', 'wally-grow-child'),
-                'links' => array(
-                    array('label' => __('Preguntas frecuentes', 'wally-grow-child'), 'url' => home_url('/preguntas-frecuentes/')),
-                    array('label' => __('Política de envíos', 'wally-grow-child'), 'url' => home_url('/politica-de-envios/')),
-                    array('label' => __('Términos y condiciones', 'wally-grow-child'), 'url' => home_url('/terminos-y-condiciones/')),
-                    array('label' => __('Soporte técnico', 'wally-grow-child'), 'url' => home_url('/soporte-tecnico/')),
-                ),
-            ),
-        ),
+        'columns' => $columns,
         'contact' => array(
             'title' => __('Contacto', 'wally-grow-child'),
             'items' => array(

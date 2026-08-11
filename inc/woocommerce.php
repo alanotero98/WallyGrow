@@ -9,6 +9,10 @@ if (!defined('ABSPATH')) {
 
 require_once get_stylesheet_directory() . '/inc/product-search.php';
 
+/**
+ * WooCommerce theme supports live only here (not in functions.php) to avoid
+ * duplicate owners of the same feature flags.
+ */
 function wally_grow_child_woocommerce_setup() {
     add_theme_support('woocommerce');
     add_theme_support('wc-product-gallery-zoom');
