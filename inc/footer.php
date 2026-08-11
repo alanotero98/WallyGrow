@@ -64,8 +64,21 @@ function wally_grow_get_footer_content() {
         wally_grow_footer_page_link('preguntas-frecuentes', __('Preguntas frecuentes', 'wally-grow-child')),
         wally_grow_footer_page_link('politica-de-envios', __('Política de envíos', 'wally-grow-child')),
         wally_grow_footer_page_link('terminos-y-condiciones', __('Términos y condiciones', 'wally-grow-child')),
+        wally_grow_footer_page_link('politica-de-privacidad', __('Política de privacidad', 'wally-grow-child')),
+        wally_grow_footer_page_link('privacy-policy', __('Política de privacidad', 'wally-grow-child')),
         wally_grow_footer_page_link('soporte-tecnico', __('Soporte técnico', 'wally-grow-child')),
     )));
+
+    // Deduplicate privacy if both slugs resolve to the same URL.
+    $seen_urls = array();
+    $help_links = array_values(array_filter($help_links, function ($link) use (&$seen_urls) {
+        $url = isset($link['url']) ? (string) $link['url'] : '';
+        if ($url === '' || isset($seen_urls[$url])) {
+            return false;
+        }
+        $seen_urls[$url] = true;
+        return true;
+    }));
 
     $columns = array();
     if ($category_links) {
@@ -81,16 +94,29 @@ function wally_grow_get_footer_content() {
         );
     }
 
+    $contact_items = array(
+        __('Buenos Aires, Argentina', 'wally-grow-child'),
+    );
+
+    $contact_email = defined('WALLY_GROW_CONTACT_EMAIL')
+        ? sanitize_email((string) WALLY_GROW_CONTACT_EMAIL)
+        : '';
+    if ($contact_email !== '') {
+        $contact_items[] = sprintf(
+            '<a href="mailto:%1$s">%2$s</a>',
+            esc_attr($contact_email),
+            esc_html($contact_email)
+        );
+    }
+
+    $contact_items[] = __('Mercado Pago / Transferencia', 'wally-grow-child');
+
     $content = array(
         'description' => __('Botanical Excellence. Tu socio profesional en el cultivo indoor y exterior. Tecnología, asesoramiento y calidad.', 'wally-grow-child'),
         'columns' => $columns,
         'contact' => array(
             'title' => __('Contacto', 'wally-grow-child'),
-            'items' => array(
-                __('Buenos Aires, Argentina', 'wally-grow-child'),
-                '<a href="mailto:hola@wallygrow.com">hola@wallygrow.com</a>',
-                __('Mercado Pago / Transferencia', 'wally-grow-child'),
-            ),
+            'items' => $contact_items,
         ),
     );
 
