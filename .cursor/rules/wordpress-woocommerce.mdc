@@ -1,0 +1,40 @@
+---
+description: Convenciones WordPress/WooCommerce/Blocksy para Wally Grow Child
+alwaysApply: true
+---
+
+# WordPress — Wally Grow Child
+
+## Estructura
+
+- El repo **es** el child theme (raíz = `wally-grow-child` en Docker).
+- Bootstrap mínimo en `functions.php`; lógica en `inc/*.php`.
+- Home / patrones: `inc/home-content.php`, `front-page.php`.
+- Shop: `inc/woocommerce.php`, `inc/product-search.php`.
+- Footer global: `inc/footer.php` vía filtro Blocksy.
+- Tokens: `theme.json`. Fonts self-hosted en `assets/fonts` + `assets/css/fonts.css`.
+
+## Nomenclatura
+
+- Funciones: `wally_grow_*` | Constantes: `WALLY_GROW_*` | Handles: `wally-grow-*`
+- Text domain: `wally-grow-child`
+- Filtros propios: `wally_grow:...` (ej. `wally_grow:footer:content`)
+
+## Reglas
+
+```php
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+```
+
+- Extender con hooks; nunca editar WP core, Blocksy ni WooCommerce core.
+- Soporte Woo: solo en `inc/woocommerce.php` (no duplicar en `functions.php`).
+- Enqueue condicional: assets de shop/search solo donde se usan.
+- Vanilla JS + `fetch`; sin jQuery nuevo en el child.
+- REST same-origin: `/wp-json/wally-grow/v1/...`.
+- WhatsApp: helpers en `inc/contact.php`; no renderizar CTA si falta config.
+- Integraciones Blocksy/Companion: `function_exists()` / `class_exists()`.
+
+## Voz de marca (UI)
+
+- El copy existente del sitio usa español rioplatense (Argentina). No “normalizar” a otro dialecto sin pedido explícito.
+- i18n: `__()`, `esc_html__()`, etc. con text domain `wally-grow-child`.

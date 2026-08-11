@@ -1,0 +1,25 @@
+---
+description: Bump de versión en cada cambio desplegable del tema
+alwaysApply: true
+---
+
+# Versionado — Wally Grow Child
+
+## Tema hijo (raíz del repo)
+
+En cada cambio desplegable:
+
+1. Incrementar `Version:` en `style.css` (semver; patch +1 por defecto).
+2. La constante `WALLY_GROW_CHILD_VERSION` debe leerse desde la versión del tema (no hardcodear un número distinto).
+3. Assets usan esa constante (o `filemtime()`) para cache busting.
+
+## Reglas
+
+- Cambio solo en tema → bump de versión del tema.
+- No omitir el bump "porque es chico".
+- Mencionar la versión nueva al cerrar la tarea.
+
+## Checklist al cerrar
+
+- [ ] ¿Hubo diff desplegable en el tema? → `Version` en `style.css` actualizado.
+- [ ] ¿`WALLY_GROW_CHILD_VERSION` sigue alineada con `style.css`?

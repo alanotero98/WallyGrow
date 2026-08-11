@@ -10,7 +10,15 @@ Guía para asistentes de IA que trabajan en este repositorio.
 - **Prefijo PHP / handles:** `wally_grow_*` / `wally-grow-*`
 - **Tema en disco:** raíz del repo montada como `wally-grow-child`
 
-## Flujo
+## Git (obligatorio)
+
+- Trabajar en **`develop`** o en `feat/*` / `fix/*` derivadas de `develop`.
+- **No** push ni commits de trabajo diario a **`main`** (producción).
+- PR de features → `develop`. Release → PR `develop` → `main`.
+- Detalle: [docs/desarrollo/git-flujo.md](docs/desarrollo/git-flujo.md).
+- Reglas Cursor: `.cursor/rules/` (todas `alwaysApply`).
+
+## Flujo de tarea
 
 1. Reformular el objetivo.
 2. Revisar archivos reales antes de asumir APIs o rutas.
@@ -65,6 +73,11 @@ docker compose up -d
 - phpMyAdmin: `http://localhost:8083`
 - Admin setup: `admin` / `admin` (solo local)
 
+## Documentación
+
+- [docs/BUENAS-PRACTICAS-IA.md](docs/BUENAS-PRACTICAS-IA.md)
+- [docs/desarrollo/git-flujo.md](docs/desarrollo/git-flujo.md)
+
 ## Commits
 
-Conventional Commits, mensaje en imperativo y enfocados en el **por qué**. No push ni commit de secretos.
+Conventional Commits, mensaje en imperativo y enfocados en el **por qué**. No push ni commit de secretos. No push a `main` en el día a día.

@@ -17,7 +17,9 @@ docker compose up -d
 
 El directorio del repo se monta como tema `wally-grow-child` (cambios en caliente).
 
-Ver también [AGENTS.md](AGENTS.md).
+**Git:** trabajo diario en `develop` (o `feat/*`); `main` es producción. Ver [docs/desarrollo/git-flujo.md](docs/desarrollo/git-flujo.md).
+
+Ver también [AGENTS.md](AGENTS.md) y [docs/BUENAS-PRACTICAS-IA.md](docs/BUENAS-PRACTICAS-IA.md).
 
 ## Home
 
