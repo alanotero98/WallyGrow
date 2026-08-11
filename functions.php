@@ -53,6 +53,7 @@ if (!defined('WALLY_GROW_CONTACT_EMAIL')) {
 
 require_once get_stylesheet_directory() . '/inc/contact.php';
 require_once get_stylesheet_directory() . '/inc/branding.php';
+require_once get_stylesheet_directory() . '/inc/contact-page.php';
 
 if (!function_exists('wally_grow_child_setup')) {
     function wally_grow_child_setup() {
@@ -77,7 +78,7 @@ if (!function_exists('wally_grow_child_setup')) {
         add_theme_support('html5', array('search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script'));
 
         register_nav_menus(array(
-            'primary' => __('Primary Menu', 'wally-grow-child'),
+            'primary' => __('Menú principal', 'wally-grow-child'),
         ));
     }
 }
@@ -155,5 +156,6 @@ add_action('wp', function () {
 
 require_once get_stylesheet_directory() . '/inc/setup.php';
 require_once get_stylesheet_directory() . '/inc/woocommerce.php';
+require_once get_stylesheet_directory() . '/inc/header.php';
 require_once get_stylesheet_directory() . '/inc/single-product.php';
 require_once get_stylesheet_directory() . '/inc/footer.php';

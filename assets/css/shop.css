@@ -501,8 +501,22 @@ body.woocommerce-archive #sidebar .price_slider_amount .button:hover {
 	color: var(--wg-muted);
 	font-size: 14px;
 	margin: 0;
-	padding: 20px;
+	padding: 20px 20px 12px;
 	text-align: center;
+}
+
+.wg-product-search__message-action {
+	align-items: center;
+	color: var(--wg-green-dark);
+	display: flex;
+	font-size: 14px;
+	font-weight: 700;
+	justify-content: center;
+	margin: 0 auto 16px;
+	min-height: 44px;
+	padding: 8px 16px;
+	text-decoration: none;
+	width: fit-content;
 }
 
 @media (max-width: 999px) {
