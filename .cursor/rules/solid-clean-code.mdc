@@ -1,0 +1,28 @@
+---
+description: Clean Code y SOLID — cambios mínimos, una responsabilidad
+alwaysApply: true
+---
+
+# Clean Code + SOLID
+
+## Siempre
+
+- Nombres que revelen intención.
+- Funciones cortas, una responsabilidad; máx. 2–3 niveles de anidación.
+- Cambios mínimos: no tocar código no relacionado con la tarea.
+- Reutilizar patrones del repo (`inc/`, `assets/`, filtros `wally_grow:*`).
+- Comentarios solo para invariantes o decisiones no obvias.
+
+## SOLID (práctico)
+
+- **S:** un módulo, una razón para cambiar.
+- **O:** extender con hooks/composición; no modificar código estable.
+- **D:** depender de abstracciones; inyectar dependencias.
+
+## Evitar
+
+- Helpers de un solo uso → inline.
+- Estado duplicado derivable.
+- `try/catch` amplios que oculten el error real.
+- Sobre-ingeniería y abstracciones prematuras.
+- Tests triviales salvo que se pidan o aporten cobertura real.

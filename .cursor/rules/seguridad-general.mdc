@@ -1,0 +1,41 @@
+---
+description: Seguridad obligatoria — secretos, validación, errores
+alwaysApply: true
+---
+
+# Seguridad
+
+## Secretos
+
+Nunca en código, commits, logs ni markdown. Usar `.env`, `wp-config.php` o panel hosting.
+Si se detecta un secreto expuesto: alertar y proponer rotación.
+
+## Validación en fronteras
+
+Sanitizar entradas; escapar salidas en REST, AJAX, formularios y webhooks.
+
+```php
+// ✅ Salida segura
+echo esc_html( $titulo );
+printf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $texto ) );
+
+// ✅ Nonce (ejemplo)
+if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'wally_grow_action' ) ) {
+    wp_die( 'Acceso no permitido' );
+}
+```
+
+## Formularios y endpoints públicos (orden)
+
+1. Nonce (si aplica) → 2. Honeypot → 3. Rate limit IP → 4. CAPTCHA opcional → 5. Validación servidor.
+
+## REST del child theme
+
+- Rutas públicas: rate limit + no filtrar stock numérico ni datos internos.
+- Sanitizar `args`; preferir `WP_Query` / APIs WooCommerce.
+
+## Errores
+
+- No `catch` vacío.
+- No exponer stack traces al usuario final.
+- SQL directo solo con `$wpdb->prepare()`.

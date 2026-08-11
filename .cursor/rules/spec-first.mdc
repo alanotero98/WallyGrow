@@ -1,0 +1,28 @@
+---
+description: Flujo spec-first antes de editar código
+alwaysApply: true
+---
+
+# Spec-first
+
+Secuencia: **Discovery → Spec → Approval → Edit → Validate**
+
+## Antes de editar
+
+1. Reformular el objetivo en una frase; clasificar (feature, bugfix, refactor, perf, debug, review).
+2. Reunir contexto sin asumir archivos, APIs ni dependencias.
+3. Tareas grandes: spec breve con objetivo, alcance, criterios de aceptación y plan.
+4. Tareas ambiguas: pedir aprobación explícita antes de editar.
+5. Tareas pequeñas y claras: implementar directamente.
+
+## Al editar
+
+- Cambios mínimos acotados al alcance.
+- Indicar archivos y riesgos antes de cambios invasivos.
+- No refactorizar fuera del alcance.
+
+## Al cerrar
+
+- Resumen de lo hecho.
+- Pasos de validación sugeridos.
+- Siguientes pasos si aplica.

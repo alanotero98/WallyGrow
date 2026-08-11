@@ -1,0 +1,21 @@
+---
+description: Formato Conventional Commits para mensajes de commit
+alwaysApply: true
+---
+
+# Conventional Commits
+
+Formato: `<type>(<scope>): <descripción imperativa en minúsculas>`
+
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
+
+```
+feat(shop): mejorar buscador de productos en catálogo
+fix(footer): ocultar enlaces a páginas no publicadas
+docs(agents): documentar flujo git con develop
+```
+
+- Enfocarse en el **por qué**, no en listar archivos.
+- Sin punto final en el título.
+- **No commitear sin pedido explícito del usuario.**
+- **No push a `main`:** ver regla `git-branching`.

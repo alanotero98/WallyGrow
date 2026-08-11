@@ -1,0 +1,34 @@
+---
+description: Flujo git — develop, feature branches y PR; no push directo a main
+alwaysApply: true
+---
+
+# Git branching — Wally Grow
+
+## Ramas
+
+| Rama | Rol |
+|------|-----|
+| `main` | Producción / estable. **No** trabajar ni pushear aquí en el día a día. |
+| `develop` | Integración. Base para features y fixes. |
+| `feat/*`, `fix/*`, `chore/*`, `docs/*` | Trabajo concreto. Salen de `develop`. |
+
+## Flujo obligatorio
+
+1. Partir de `develop` actualizado (`git fetch` + checkout).
+2. Crear rama de trabajo: `feat/descripcion-corta`, `fix/...`, etc.
+3. Commits con Conventional Commits (solo si el usuario lo pide).
+4. Push de la rama de trabajo → **PR hacia `develop`**.
+5. Release a producción: PR `develop` → `main` (cuando el equipo lo pida).
+
+## Prohibido (salvo pedido explícito del dueño del repo)
+
+- Commit o push directo a `main`.
+- Force push a `main` / `develop`.
+- Abrir PR de feature directo a `main` saltándose `develop`.
+
+## Si el agente está en `main` por error
+
+1. Avisar.
+2. Mover el trabajo a `develop` o a una `feat/*` antes de seguir editando.
+3. No “arreglar” reescribiendo historia de `main` sin aprobación explícita.
