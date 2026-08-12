@@ -16,7 +16,7 @@
       "defaultGradients": false,
       "defaultPalette": false,
       "palette": [
-        { "slug": "primary", "color": "#1fa34a", "name": "Verde Wally" },
+        { "slug": "primary", "color": "#1d8847", "name": "Verde Wally" },
         { "slug": "primary-hover", "color": "#08752f", "name": "Verde Wally oscuro" },
         { "slug": "secondary", "color": "#5c5f60", "name": "Gris secundario" },
         { "slug": "accent", "color": "#166534", "name": "Acento botánico" },
@@ -25,7 +25,8 @@
         { "slug": "background", "color": "#ffffff", "name": "Blanco" },
         { "slug": "surface", "color": "#f9fafb", "name": "Superficie" },
         { "slug": "surface-strong", "color": "#f3f4f6", "name": "Superficie marcada" },
-        { "slug": "border", "color": "#e5e7eb", "name": "Borde" },
+        { "slug": "border", "color": "#8b939e", "name": "Borde UI" },
+        { "slug": "border-subtle", "color": "#e5e7eb", "name": "Borde sutil" },
         { "slug": "success-soft", "color": "#dcfce7", "name": "Verde suave" },
         { "slug": "error", "color": "#ba1a1a", "name": "Error" }
       ]
