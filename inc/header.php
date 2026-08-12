@@ -136,7 +136,7 @@ add_filter('woocommerce_add_to_cart_fragments', 'wally_grow_add_cart_count_fragm
  */
 function wally_grow_translate_blocksy_header_controls($translated, $text) {
     $labels = array(
-        'Search' => __('Buscar', 'wally-grow-child'),
+        'Search' => __('Buscar productos', 'wally-grow-child'),
         'Close search modal' => __('Cerrar búsqueda', 'wally-grow-child'),
         'Close drawer' => __('Cerrar menú', 'wally-grow-child'),
         'Menu' => __('Menú', 'wally-grow-child'),
