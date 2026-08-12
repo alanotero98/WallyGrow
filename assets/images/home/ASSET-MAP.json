@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "brand": "Wally Grow",
+  "webReadyBasePath": "web-ready",
+  "sourceBasePath": "source-png",
+  "assets": [
+    {
+      "id": "home-hero-grow-kit",
+      "webReady": "wg-home-hero-grow-kit.webp",
+      "source": "wg-home-hero-grow-kit.png",
+      "width": 1536,
+      "height": 1024,
+      "role": "hero",
+      "fit": "contain",
+      "position": "center",
+      "status": "editorial"
+    },
+    {
+      "id": "category-lighting",
+      "webReady": "wg-category-lighting.webp",
+      "source": "wg-category-lighting.png",
+      "width": 1200,
+      "height": 800,
+      "role": "category-background",
+      "fit": "cover",
+      "position": "center",
+      "status": "editorial"
+    },
+    {
+      "id": "category-nutrients",
+      "webReady": "wg-category-nutrients.webp",
+      "source": "wg-category-nutrients.png",
+      "width": 1200,
+      "height": 800,
+      "role": "category-background",
+      "fit": "cover",
+      "position": "center",
+      "status": "editorial"
+    },
+    {
+      "id": "category-indoor",
+      "webReady": "wg-category-indoor.webp",
+      "source": "wg-category-indoor.png",
+      "width": 1200,
+      "height": 800,
+      "role": "category-background",
+      "fit": "cover",
+      "position": "center",
+      "status": "editorial"
+    },
+    {
+      "id": "section-tools-store",
+      "webReady": "wg-section-tools-store.webp",
+      "source": "wg-section-tools-store.png",
+      "width": 1440,
+      "height": 1080,
+      "role": "section-image",
+      "fit": "cover",
+      "position": "center",
+      "status": "editorial"
+    },
+    {
+      "id": "section-advice-leaf",
+      "webReady": "wg-section-advice-leaf.webp",
+      "source": "wg-section-advice-leaf.png",
+      "width": 1440,
+      "height": 1080,
+      "role": "section-image",
+      "fit": "cover",
+      "position": "62% center",
+      "status": "editorial"
+    },
+    {
+      "id": "placeholder-led-panel",
+      "webReady": "wg-placeholder-led-panel.webp",
+      "source": "wg-placeholder-led-panel.png",
+      "width": 900,
+      "height": 900,
+      "role": "development-placeholder",
+      "fit": "contain",
+      "position": "center",
+      "status": "replace-with-woocommerce-media"
+    },
+    {
+      "id": "placeholder-nutrient-bottle",
+      "webReady": "wg-placeholder-nutrient-bottle.webp",
+      "source": "wg-placeholder-nutrient-bottle.png",
+      "width": 900,
+      "height": 900,
+      "role": "development-placeholder",
+      "fit": "contain",
+      "position": "center",
+      "status": "replace-with-woocommerce-media"
+    },
+    {
+      "id": "placeholder-grow-tent",
+      "webReady": "wg-placeholder-grow-tent.webp",
+      "source": "wg-placeholder-grow-tent.png",
+      "width": 900,
+      "height": 900,
+      "role": "development-placeholder",
+      "fit": "contain",
+      "position": "center",
+      "status": "replace-with-woocommerce-media"
+    },
+    {
+      "id": "placeholder-inline-extractor",
+      "webReady": "wg-placeholder-inline-extractor.webp",
+      "source": "wg-placeholder-inline-extractor.png",
+      "width": 900,
+      "height": 900,
+      "role": "development-placeholder",
+      "fit": "contain",
+      "position": "center",
+      "status": "replace-with-woocommerce-media"
+    }
+  ]
+}
+
