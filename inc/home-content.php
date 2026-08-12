@@ -22,6 +22,15 @@ function wally_grow_get_home_blocks() {
     $whatsapp_url = wally_grow_get_whatsapp_url();
     $advice_whatsapp_url = wally_grow_get_whatsapp_url($advice_message);
     $has_whatsapp = wally_grow_has_whatsapp();
+    $advice_badge = $has_whatsapp
+        ? __('ASESORAMIENTO POR WHATSAPP', 'wally-grow-child')
+        : __('GUÍA PARA ELEGIR', 'wally-grow-child');
+    $advice_lead = $has_whatsapp
+        ? __('Contanos qué espacio tenés, en qué etapa estás y qué querés mejorar. En Wally Grow te ayudamos a elegir iluminación, nutrientes, ventilación y accesorios según las necesidades de tu cultivo y tu presupuesto.', 'wally-grow-child')
+        : __('Explorá iluminación, nutrientes, ventilación y accesorios según la etapa de tu cultivo y el espacio disponible.', 'wally-grow-child');
+    $cta_description = $has_whatsapp
+        ? __('Explorá productos seleccionados o hablá con Wally Grow para encontrar la mejor opción según tu espacio y presupuesto.', 'wally-grow-child')
+        : __('Explorá productos seleccionados para cada etapa del cultivo y compará las opciones disponibles.', 'wally-grow-child');
 
     $hero_whatsapp_button = $has_whatsapp
         ? '<!-- wp:button {"className":"is-style-outline"} -->'
@@ -96,6 +105,9 @@ function wally_grow_get_home_blocks() {
         '{{hero_whatsapp_button}}' => $hero_whatsapp_button,
         '{{advice_whatsapp_buttons}}' => $advice_whatsapp_buttons,
         '{{cta_whatsapp_button}}' => $cta_whatsapp_button,
+        '{{advice_badge}}' => esc_html($advice_badge),
+        '{{advice_lead}}' => esc_html($advice_lead),
+        '{{cta_description}}' => esc_html($cta_description),
         '{{home}}' => esc_url(home_url('/')),
         '{{products}}' => $products_block,
         '{{reviews}}' => $reviews_block,
@@ -116,7 +128,7 @@ function wally_grow_get_home_blocks() {
 <div class="wp-block-button is-style-fill"><a class="wp-block-button__link wp-element-button" href="{{shop}}">Explorar productos</a></div>
 <!-- /wp:button -->{{hero_whatsapp_button}}</div>
 <!-- /wp:buttons --><!-- wp:paragraph {"className":"wg-hero__trust"} -->
-<p class="wg-hero__trust">Envíos · Retiro en tienda · Atención personalizada</p>
+<p class="wg-hero__trust">Catálogo especializado · Atención personalizada</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:column --><!-- wp:column {"verticalAlignment":"center"} -->
 <div class="wp-block-column is-vertically-aligned-center"><!-- wp:image {"sizeSlug":"full","linkDestination":"none","className":"wg-hero__image"} -->
@@ -150,7 +162,7 @@ function wally_grow_get_home_blocks() {
 <div class="wp-block-group alignfull wg-section wg-expertise"><!-- wp:columns {"verticalAlignment":"center","align":"wide"} -->
 <div class="wp-block-columns alignwide are-vertically-aligned-center"><!-- wp:column {"verticalAlignment":"center"} -->
 <div class="wp-block-column is-vertically-aligned-center"><!-- wp:cover {"url":"{{expertise}}","dimRatio":0,"className":"wg-expertise__image"} -->
-<div class="wp-block-cover wg-expertise__image"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span><img class="wp-block-cover__image-background" alt="Hojas saludables con gotas de agua" src="{{expertise}}" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"className":"wg-advice-badge"} --><p class="wg-advice-badge">ASESORAMIENTO POR WHATSAPP</p><!-- /wp:paragraph --></div></div>
+<div class="wp-block-cover wg-expertise__image"><span aria-hidden="true" class="wp-block-cover__background has-background-dim-0 has-background-dim"></span><img class="wp-block-cover__image-background" alt="Hojas saludables con gotas de agua" src="{{expertise}}" data-object-fit="cover"/><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"className":"wg-advice-badge"} --><p class="wg-advice-badge">{{advice_badge}}</p><!-- /wp:paragraph --></div></div>
 <!-- /wp:cover --></div>
 <!-- /wp:column --><!-- wp:column {"verticalAlignment":"center","className":"wg-expertise__copy"} -->
 <div class="wp-block-column is-vertically-aligned-center wg-expertise__copy"><!-- wp:paragraph {"className":"wg-expertise__eyebrow"} -->
@@ -158,7 +170,7 @@ function wally_grow_get_home_blocks() {
 <!-- /wp:paragraph --><!-- wp:heading {"level":2} -->
 <h2 class="wp-block-heading">Tu cultivo no necesita cualquier producto.<br>Necesita una buena recomendación.</h2>
 <!-- /wp:heading --><!-- wp:paragraph {"className":"wg-lead"} -->
-<p class="wg-lead">Contanos qué espacio tenés, en qué etapa estás y qué querés mejorar. En Wally Grow te ayudamos a elegir iluminación, nutrientes, ventilación y accesorios según las necesidades de tu cultivo y tu presupuesto.</p>
+<p class="wg-lead">{{advice_lead}}</p>
 <!-- /wp:paragraph --><!-- wp:list {"className":"wg-check-list"} -->
 <ul class="wg-check-list"><li>Recomendaciones según tu cultivo</li><li>Alternativas para distintos presupuestos</li><li>Atención antes y después de la compra</li></ul>
 <!-- /wp:list -->{{advice_whatsapp_buttons}}</div>
@@ -173,7 +185,7 @@ function wally_grow_get_home_blocks() {
 <!-- /wp:group -->
 
 <!-- wp:group {"align":"full","className":"wg-cta","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull wg-cta" id="marcas"><!-- wp:heading {"textAlign":"center","level":2} --><h2 class="wp-block-heading has-text-align-center">¿Listo para mejorar tu cultivo?</h2><!-- /wp:heading --><!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center">Explorá productos seleccionados o hablá con Wally Grow para encontrar la mejor opción según tu espacio y presupuesto.</p><!-- /wp:paragraph --><!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} --><div class="wp-block-buttons"><!-- wp:button {"className":"wg-cta__primary"} --><div class="wp-block-button wg-cta__primary"><a class="wp-block-button__link wp-element-button" href="{{shop}}">Explorar la tienda</a></div><!-- /wp:button -->{{cta_whatsapp_button}}</div><!-- /wp:buttons --></div>
+<div class="wp-block-group alignfull wg-cta" id="marcas"><!-- wp:heading {"textAlign":"center","level":2} --><h2 class="wp-block-heading has-text-align-center">¿Listo para mejorar tu cultivo?</h2><!-- /wp:heading --><!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center">{{cta_description}}</p><!-- /wp:paragraph --><!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} --><div class="wp-block-buttons"><!-- wp:button {"className":"wg-cta__primary"} --><div class="wp-block-button wg-cta__primary"><a class="wp-block-button__link wp-element-button" href="{{shop}}">Explorar la tienda</a></div><!-- /wp:button -->{{cta_whatsapp_button}}</div><!-- /wp:buttons --></div>
 <!-- /wp:group -->
 
 <!-- wp:group {"align":"full","className":"wg-section wg-testimonials","layout":{"type":"constrained"}} -->

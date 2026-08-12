@@ -34,13 +34,19 @@ add_action('init', 'wally_grow_child_register_block_patterns');
  * Keep Blocksy's page title and content wrappers out of the bespoke front page.
  */
 add_filter('blocksy:hero:enabled', function ($enabled) {
-    return (is_front_page() || (function_exists('is_shop') && (is_shop() || is_product_taxonomy())))
+    $is_product_search = function_exists('wally_grow_is_product_search_request')
+        && wally_grow_is_product_search_request();
+
+    return (is_front_page() || (function_exists('is_shop') && (is_shop() || is_product_taxonomy() || $is_product_search)))
         ? false
         : $enabled;
 });
 
 add_filter('blocksy:hero:custom-source', function ($source) {
-    if (is_front_page() || (function_exists('is_shop') && (is_shop() || is_product_taxonomy()))) {
+    $is_product_search = function_exists('wally_grow_is_product_search_request')
+        && wally_grow_is_product_search_request();
+
+    if (is_front_page() || (function_exists('is_shop') && (is_shop() || is_product_taxonomy() || $is_product_search))) {
         return false;
     }
 

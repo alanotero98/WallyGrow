@@ -54,6 +54,17 @@ function wally_grow_get_whatsapp_url($message = '') {
 }
 
 /**
+ * Sanitized public contact email, or an empty string when unconfigured.
+ */
+function wally_grow_get_contact_email() {
+    if (!defined('WALLY_GROW_CONTACT_EMAIL')) {
+        return '';
+    }
+
+    return sanitize_email((string) WALLY_GROW_CONTACT_EMAIL);
+}
+
+/**
  * First published product_cat URL matching any of the candidate slugs.
  *
  * @param string[] $slugs Candidate term slugs.
