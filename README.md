@@ -99,7 +99,7 @@ prioridad deliberadamente.
 Es la fuente principal para Gutenberg y el editor:
 
 - Paleta cerrada, sin colores ni gradientes predeterminados de WordPress.
-- Verde primario `#1FA34A`, hover `#08752F`, acento `#166534`.
+- Verde primario `#1D8847` (AA con blanco), hover `#08752F`, acento `#166534`.
 - Carbón `#111827`, secundarios neutros, blanco, superficies y bordes.
 - Manrope para H1–H5; Hanken Grotesk para cuerpo, etiquetas, botones y H6.
 - Escala H1–H6, texto de 12/14/16/18 px y display fluido 32–48 px.

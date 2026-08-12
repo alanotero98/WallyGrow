@@ -84,7 +84,7 @@ body.woocommerce-archive [data-products] {
 body.woocommerce-shop [data-products] .product,
 body.woocommerce-archive [data-products] .product {
 	background: #fff;
-	border: 1px solid var(--wg-border);
+	border: 1px solid var(--wg-border-subtle, #e5e7eb);
 	border-radius: 8px;
 	box-sizing: border-box;
 	display: flex;
@@ -96,7 +96,7 @@ body.woocommerce-archive [data-products] .product {
 
 body.woocommerce-shop [data-products] .product:hover,
 body.woocommerce-archive [data-products] .product:hover {
-	border-color: #d1d5db;
+	border-color: var(--wg-border, #8b939e);
 	box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 	transform: translateY(-2px);
 }
@@ -380,7 +380,7 @@ body.woocommerce-archive #sidebar .price_slider_amount .button:hover {
 
 .wg-product-search:focus-within .wg-product-search__field {
 	border-color: var(--wg-green);
-	box-shadow: 0 0 0 3px rgba(31, 163, 74, 0.1);
+	box-shadow: 0 0 0 3px rgba(29, 136, 71, 0.18);
 }
 
 .wg-product-search__field > svg {
