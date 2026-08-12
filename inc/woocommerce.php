@@ -85,6 +85,26 @@ add_filter('woocommerce_sale_flash', function ($html) {
 });
 
 /**
+ * On the Home recommendations grid, prefer a clear product permalink CTA.
+ *
+ * @param string     $html    Add to cart link markup.
+ * @param WC_Product $product Product object.
+ * @return string
+ */
+function wally_grow_home_loop_product_link($html, $product) {
+    if (!wally_grow_is_home_product_loop() || !($product instanceof WC_Product)) {
+        return $html;
+    }
+
+    return sprintf(
+        '<a href="%1$s" class="button">%2$s</a>',
+        esc_url($product->get_permalink()),
+        esc_html__('Ver producto', 'wally-grow-child')
+    );
+}
+add_filter('woocommerce_loop_add_to_cart_link', 'wally_grow_home_loop_product_link', 10, 2);
+
+/**
  * Keep /shop/ as the single canonical catalog URL. The old static /tienda/
  * page remains recoverable in WordPress but no longer competes with the shop.
  */

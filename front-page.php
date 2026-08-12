@@ -16,7 +16,7 @@ $front_page = get_queried_object();
 $content = $front_page instanceof WP_Post ? trim($front_page->post_content) : '';
 $uses_wally_home_blocks = $content !== '' && strpos($content, 'wg-') !== false;
 ?>
-<div class="wally-home">
+<div class="wally-home wg-home">
     <?php
     if ($uses_wally_home_blocks) {
         echo apply_filters('the_content', $content); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
