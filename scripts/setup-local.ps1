@@ -73,12 +73,55 @@ if ($script:LastDockerExit -ne 0) { throw "No se pudo activar wally-grow-child" 
 
 Write-Host "==> WooCommerce..." -ForegroundColor Cyan
 Get-WpOut plugin install woocommerce --activate | Out-Host
-Get-WpOut option update woocommerce_store_address "Santiago" | Out-Null
-Get-WpOut option update woocommerce_default_country "CL" | Out-Null
-Get-WpOut option update woocommerce_currency "CLP" | Out-Null
+Get-WpOut option update woocommerce_store_address "Buenos Aires" | Out-Null
+Get-WpOut option update woocommerce_default_country "AR" | Out-Null
+Get-WpOut option update woocommerce_currency "ARS" | Out-Null
 Get-WpOut option update woocommerce_coming_soon "no" | Out-Null
 Get-WpOut option update woocommerce_store_pages_only "no" | Out-Null
+Get-WpOut option update woocommerce_weight_unit "kg" | Out-Null
+Get-WpOut option update woocommerce_dimension_unit "cm" | Out-Null
 Get-WpOut wc tool run install_pages --user=1 | Out-Null
+
+# Scaffolding técnico: métodos listos para que el cliente complete datos (sin inventar cuentas ni tarifas).
+Invoke-DockerExec @(
+    "wp", "eval",
+    "update_option('woocommerce_bacs_settings', array('enabled'=>'yes','title'=>'Transferencia bancaria','description'=>'Completar CBU/alias en WooCommerce > Ajustes > Pagos.','instructions'=>'')); update_option('woocommerce_cod_settings', array('enabled'=>'no'));",
+    "--allow-root"
+) | Out-Null
+
+Write-Host "==> Categorías base (vacías, slugs del tema)..." -ForegroundColor Cyan
+@(
+    @{ name = "Iluminación"; slug = "iluminacion" },
+    @{ name = "Nutrientes"; slug = "nutrientes" },
+    @{ name = "Carpas"; slug = "carpas" },
+    @{ name = "Accesorios"; slug = "accesorios" }
+) | ForEach-Object {
+    $exists = Get-WpOut term list product_cat --slug=$($_.slug) --field=term_id
+    if (-not $exists) {
+        Get-WpOut term create product_cat $_.name --slug=$($_.slug) | Out-Null
+    }
+}
+
+Write-Host "==> Páginas legales en borrador (contenido del cliente)..." -ForegroundColor Cyan
+$stub = "<!-- Completar contenido con el cliente antes de publicar. -->"
+@(
+    @{ title = "Preguntas frecuentes"; slug = "preguntas-frecuentes" },
+    @{ title = "Política de envíos"; slug = "politica-de-envios" },
+    @{ title = "Términos y condiciones"; slug = "terminos-y-condiciones" },
+    @{ title = "Política de privacidad"; slug = "politica-de-privacidad" },
+    @{ title = "Soporte técnico"; slug = "soporte-tecnico" }
+) | ForEach-Object {
+    $id = Get-WpOut post list --post_type=page --name=$($_.slug) --field=ID
+    if (-not $id) {
+        Get-WpOut post create `
+            --post_type=page `
+            --post_title="$($_.title)" `
+            --post_name="$($_.slug)" `
+            --post_status=draft `
+            --post_content="$stub" `
+            --porcelain | Out-Null
+    }
+}
 
 Write-Host "==> Página de inicio estática..." -ForegroundColor Cyan
 $homeId = Get-WpOut post list --post_type=page --name=inicio --field=ID
@@ -126,3 +169,4 @@ Write-Host ""
 Write-Host "Listo. Sitio: $SiteUrl" -ForegroundColor Green
 Write-Host "Admin:  $SiteUrl/wp-admin (admin / admin)" -ForegroundColor Green
 Write-Host "phpMyAdmin: http://localhost:8083" -ForegroundColor Green
+Write-Host "Tienda: AR / ARS. Legales en borrador. WhatsApp/productos/pagos: ver docs/desarrollo/checklist-cliente.md" -ForegroundColor Yellow

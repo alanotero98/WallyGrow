@@ -57,9 +57,10 @@ Definir en `wp-config.php` (o equivalente) cuando el cliente entregue datos real
 ```php
 define('WALLY_GROW_WHATSAPP_NUMBER', '54911XXXXXXXX'); // dígitos internacionales
 // opcional: define('WALLY_GROW_WHATSAPP_URL', 'https://wa.me/54911...');
+define('WALLY_GROW_CONTACT_EMAIL', 'hola@ejemplo.com');
 ```
 
-Sin número/URL, los CTAs de WhatsApp no se renderizan.
+Sin número/URL, los CTAs de WhatsApp no se renderizan. Sin email, el footer no muestra mailto.
 
 ## Docker local
 
@@ -77,6 +78,7 @@ docker compose up -d
 
 - [docs/BUENAS-PRACTICAS-IA.md](docs/BUENAS-PRACTICAS-IA.md)
 - [docs/desarrollo/git-flujo.md](docs/desarrollo/git-flujo.md)
+- [docs/desarrollo/checklist-cliente.md](docs/desarrollo/checklist-cliente.md) — datos que completa el cliente
 
 ## Commits
 
