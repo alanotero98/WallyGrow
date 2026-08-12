@@ -63,3 +63,20 @@ function wally_grow_render_product_whatsapp_cta() {
     <?php
 }
 add_action('woocommerce_single_product_summary', 'wally_grow_render_product_whatsapp_cta', 35);
+
+/**
+ * Load PDP styles only on single product pages.
+ */
+function wally_grow_enqueue_product_assets() {
+    if (!is_product()) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'wally-grow-product',
+        get_stylesheet_directory_uri() . '/assets/css/product.css',
+        array('wally-grow-child-components', 'ct-woocommerce-styles'),
+        WALLY_GROW_CHILD_VERSION
+    );
+}
+add_action('wp_enqueue_scripts', 'wally_grow_enqueue_product_assets', 120);
