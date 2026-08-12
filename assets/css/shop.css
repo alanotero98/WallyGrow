@@ -511,6 +511,10 @@ body.woocommerce-archive #sidebar .price_slider_amount .button:hover {
 		grid-template-columns: 1fr;
 	}
 
+	.wg-product-search {
+		width: 100%;
+	}
+
 	body.woocommerce-shop [data-products],
 	body.woocommerce-archive [data-products] {
 		--shop-columns: repeat(2, minmax(0, 1fr));
@@ -525,6 +529,8 @@ body.woocommerce-archive #sidebar .price_slider_amount .button:hover {
 	body.woocommerce-shop .site-main,
 	body.woocommerce-archive .site-main {
 		padding-bottom: 64px;
+		padding-left: 16px;
+		padding-right: 16px;
 	}
 
 	.wg-shop-header {
@@ -533,7 +539,7 @@ body.woocommerce-archive #sidebar .price_slider_amount .button:hover {
 	}
 
 	.wg-shop-header h1 {
-		font-size: 36px;
+		font-size: clamp(1.75rem, 8vw, 2.25rem);
 	}
 
 	.woo-listing-top {
@@ -550,6 +556,12 @@ body.woocommerce-archive #sidebar .price_slider_amount .button:hover {
 	body.woocommerce-shop [data-products],
 	body.woocommerce-archive [data-products] {
 		--shop-columns: repeat(1, minmax(0, 1fr));
+	}
+
+	body.woocommerce-shop [data-products] .woocommerce-loop-product__title,
+	body.woocommerce-archive [data-products] .woocommerce-loop-product__title {
+		overflow-wrap: anywhere;
+		word-break: break-word;
 	}
 
 	.wg-product-search__dropdown {
