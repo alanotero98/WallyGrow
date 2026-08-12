@@ -16,7 +16,7 @@ $front_page = get_queried_object();
 $content = $front_page instanceof WP_Post ? trim($front_page->post_content) : '';
 $uses_wally_home_blocks = $content !== '' && strpos($content, 'wg-') !== false;
 ?>
-<main id="primary" class="site-main wally-home">
+<div class="wally-home">
     <?php
     if ($uses_wally_home_blocks) {
         echo apply_filters('the_content', $content); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -24,6 +24,6 @@ $uses_wally_home_blocks = $content !== '' && strpos($content, 'wg-') !== false;
         echo apply_filters('the_content', wally_grow_get_home_blocks()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
     ?>
-</main>
+</div>
 <?php
 get_footer();

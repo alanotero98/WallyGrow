@@ -34,11 +34,16 @@ function wally_grow_enqueue_product_search_assets() {
         'wallyProductSearch',
         array(
             'endpoint' => esc_url_raw(rest_url('wally-grow/v1/product-search')),
+            'shopUrl' => function_exists('wc_get_page_permalink')
+                ? esc_url_raw(wc_get_page_permalink('shop'))
+                : esc_url_raw(home_url('/')),
             'minChars' => 2,
             'messages' => array(
                 'loading' => __('Buscando productos…', 'wally-grow-child'),
                 'empty' => __('No encontramos productos.', 'wally-grow-child'),
                 'error' => __('No pudimos completar la búsqueda.', 'wally-grow-child'),
+                'tooShort' => __('Escribí al menos 2 caracteres para buscar.', 'wally-grow-child'),
+                'browseShop' => __('Ver toda la tienda', 'wally-grow-child'),
             ),
         )
     );
@@ -87,7 +92,7 @@ function wally_grow_get_product_search_markup() {
 
     ob_start();
     ?>
-    <form class="wg-product-search" role="search" action="<?php echo esc_url(home_url('/')); ?>" method="get" data-wg-product-search>
+    <form class="wg-product-search" role="search" action="<?php echo esc_url(home_url('/')); ?>" method="get" data-wg-product-search novalidate>
         <label class="screen-reader-text" for="<?php echo esc_attr($search_id); ?>">
             <?php esc_html_e('Buscar productos', 'wally-grow-child'); ?>
         </label>
@@ -100,6 +105,7 @@ function wally_grow_get_product_search_markup() {
                 class="wg-product-search__input"
                 type="search"
                 name="s"
+                value="<?php echo esc_attr(get_search_query()); ?>"
                 placeholder="<?php esc_attr_e('Buscar un producto…', 'wally-grow-child'); ?>"
                 autocomplete="off"
                 minlength="2"

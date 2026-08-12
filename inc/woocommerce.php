@@ -26,6 +26,14 @@ function wally_grow_is_home_product_loop() {
 }
 
 /**
+ * True for the public product-only search form supplied by this theme.
+ */
+function wally_grow_is_product_search_request() {
+    $post_type = get_query_var('post_type');
+    return is_search() && ($post_type === 'product' || $post_type === array('product'));
+}
+
+/**
  * Prefer a real brand attribute, then a useful product category.
  */
 function wally_grow_get_product_commercial_label($product) {
@@ -101,15 +109,22 @@ add_filter('loop_shop_columns', function () {
  * before_shop_loop, this hook also runs for a legitimate empty catalog.
  */
 function wally_grow_render_shop_header() {
-    if (!is_shop() && !is_product_taxonomy()) {
+    if (!is_shop() && !is_product_taxonomy() && !wally_grow_is_product_search_request()) {
         return;
     }
 
     $description = '';
+    $title = woocommerce_page_title(false);
 
     if (is_product_taxonomy()) {
         $description = term_description();
+    } elseif (wally_grow_is_product_search_request()) {
+        $title = sprintf(
+            __('Resultados para “%s”', 'wally-grow-child'),
+            get_search_query()
+        );
     } elseif (is_shop()) {
+        $title = __('Tienda', 'wally-grow-child');
         $shop_id = wc_get_page_id('shop');
         if ($shop_id > 0) {
             $description = get_post_field('post_excerpt', $shop_id);
@@ -122,7 +137,7 @@ function wally_grow_render_shop_header() {
     <header class="wg-shop-header">
         <div class="wg-shop-header__copy">
             <p class="wg-eyebrow"><?php esc_html_e('Catálogo', 'wally-grow-child'); ?></p>
-            <h1><?php echo esc_html(woocommerce_page_title(false)); ?></h1>
+            <h1><?php echo esc_html($title); ?></h1>
             <?php if ($description) : ?>
                 <div class="wg-shop-header__description">
                     <?php echo wp_kses_post(wpautop(do_shortcode($description))); ?>
@@ -134,6 +149,66 @@ function wally_grow_render_shop_header() {
     <?php
 }
 add_action('woocommerce_before_main_content', 'wally_grow_render_shop_header', 11);
+
+/**
+ * Replace WooCommerce's generic empty notice with useful recovery routes.
+ */
+function wally_grow_render_products_empty_state() {
+    $shop_url = wc_get_page_permalink('shop');
+    $home_url = home_url('/');
+    $is_search = wally_grow_is_product_search_request();
+    $terms = get_terms(array(
+        'taxonomy' => 'product_cat',
+        'hide_empty' => true,
+        'number' => 4,
+        'parent' => 0,
+    ));
+
+    $title = $is_search
+        ? sprintf(
+            __('No encontramos resultados para “%s”', 'wally-grow-child'),
+            get_search_query()
+        )
+        : __('Todavía no hay productos disponibles acá', 'wally-grow-child');
+
+    $description = $is_search
+        ? __('Probá con otro término o recorré las categorías disponibles.', 'wally-grow-child')
+        : __('Podés volver a la tienda más adelante o seguir explorando el sitio.', 'wally-grow-child');
+    ?>
+    <section class="wg-empty-state" aria-labelledby="wg-products-empty-title">
+        <p class="wg-eyebrow"><?php esc_html_e('Sin resultados', 'wally-grow-child'); ?></p>
+        <h2 id="wg-products-empty-title"><?php echo esc_html($title); ?></h2>
+        <p><?php echo esc_html($description); ?></p>
+
+        <?php if (!is_wp_error($terms) && $terms) : ?>
+            <nav class="wg-empty-state__categories" aria-label="<?php esc_attr_e('Categorías disponibles', 'wally-grow-child'); ?>">
+                <?php foreach ($terms as $term) : ?>
+                    <a href="<?php echo esc_url(get_term_link($term)); ?>">
+                        <?php echo esc_html($term->name); ?>
+                    </a>
+                <?php endforeach; ?>
+            </nav>
+        <?php endif; ?>
+
+        <div class="wg-empty-state__actions">
+            <?php if (!is_shop()) : ?>
+                <a class="button" href="<?php echo esc_url($shop_url); ?>">
+                    <?php esc_html_e('Ver toda la tienda', 'wally-grow-child'); ?>
+                </a>
+            <?php endif; ?>
+            <a class="button wg-button--secondary" href="<?php echo esc_url($home_url); ?>">
+                <?php esc_html_e('Volver al inicio', 'wally-grow-child'); ?>
+            </a>
+        </div>
+    </section>
+    <?php
+}
+
+function wally_grow_replace_products_empty_state() {
+    remove_action('woocommerce_no_products_found', 'wc_no_products_found', 10);
+    add_action('woocommerce_no_products_found', 'wally_grow_render_products_empty_state', 10);
+}
+add_action('wp', 'wally_grow_replace_products_empty_state');
 
 /**
  * Show Blocksy's native WooCommerce sidebar only when it has widgets and the
@@ -174,7 +249,7 @@ function wally_grow_shop_has_facets() {
 }
 
 add_filter('blocksy:general:sidebar-position', function ($position) {
-    if (!is_shop() && !is_product_taxonomy()) {
+    if (!is_shop() && !is_product_taxonomy() && !wally_grow_is_product_search_request()) {
         return $position;
     }
 
@@ -187,7 +262,7 @@ add_filter('blocksy:general:sidebar-position', function ($position) {
  * Assets specific to product archives and the reusable search component.
  */
 function wally_grow_enqueue_shop_assets() {
-    if (!is_shop() && !is_product_taxonomy()) {
+    if (!is_shop() && !is_product_taxonomy() && !wally_grow_is_product_search_request()) {
         return;
     }
 

@@ -30,6 +30,10 @@ if ! docker exec "$CONTAINER" wp core is-installed --allow-root 2>/dev/null; the
     --allow-root
 fi
 
+echo "==> Idioma español (Argentina)..."
+docker exec "$CONTAINER" wp language core install es_AR --activate --allow-root
+docker exec "$CONTAINER" wp option update WPLANG es_AR --allow-root
+
 echo "==> Permalink structure..."
 docker exec "$CONTAINER" wp rewrite structure '/%postname%/' --allow-root
 docker exec "$CONTAINER" wp rewrite flush --allow-root
@@ -40,7 +44,7 @@ docker exec "$CONTAINER" wp theme activate wally-grow-child --allow-root
 
 echo "==> WooCommerce..."
 docker exec "$CONTAINER" wp plugin install woocommerce --activate --allow-root
-docker exec "$CONTAINER" wp option update woocommerce_store_address "Buenos Aires" --allow-root
+docker exec "$CONTAINER" wp language plugin install woocommerce es_AR --allow-root
 docker exec "$CONTAINER" wp option update woocommerce_default_country "AR" --allow-root
 docker exec "$CONTAINER" wp option update woocommerce_currency "ARS" --allow-root
 docker exec "$CONTAINER" wp option update woocommerce_coming_soon "no" --allow-root
@@ -49,7 +53,20 @@ docker exec "$CONTAINER" wp option update woocommerce_weight_unit "kg" --allow-r
 docker exec "$CONTAINER" wp option update woocommerce_dimension_unit "cm" --allow-root
 docker exec "$CONTAINER" wp wc tool run install_pages --user=1 --allow-root 2>/dev/null || true
 
-docker exec "$CONTAINER" wp eval 'update_option("woocommerce_bacs_settings", array("enabled"=>"yes","title"=>"Transferencia bancaria","description"=>"Completar CBU/alias en WooCommerce > Ajustes > Pagos.","instructions"=>"")); update_option("woocommerce_cod_settings", array("enabled"=>"no"));' --allow-root
+echo "==> Títulos de páginas WooCommerce..."
+while IFS='|' read -r option title; do
+  page_id="$(docker exec "$CONTAINER" wp option get "$option" --allow-root 2>/dev/null | tr -d '\r')"
+  if [[ "$page_id" =~ ^[0-9]+$ ]]; then
+    docker exec "$CONTAINER" wp post update "$page_id" --post_title="$title" --allow-root >/dev/null
+  fi
+done <<'WOO_PAGES'
+woocommerce_shop_page_id|Tienda
+woocommerce_cart_page_id|Carrito
+woocommerce_checkout_page_id|Finalizar compra
+woocommerce_myaccount_page_id|Mi cuenta
+WOO_PAGES
+
+docker exec "$CONTAINER" wp eval 'update_option("woocommerce_bacs_settings", array("enabled"=>"no","title"=>"Transferencia bancaria","description"=>"Completar CBU/alias en WooCommerce > Ajustes > Pagos.","instructions"=>"")); update_option("woocommerce_cod_settings", array("enabled"=>"no"));' --allow-root
 
 echo "==> Categorías base (vacías, slugs del tema)..."
 for pair in "Iluminación:iluminacion" "Nutrientes:nutrientes" "Carpas:carpas" "Accesorios:accesorios"; do
@@ -96,6 +113,10 @@ docker exec "$CONTAINER" wp option update show_on_front page --allow-root
 docker exec "$CONTAINER" wp option update page_on_front "$HOME_ID" --allow-root
 
 SHOP_ID="$(docker exec "$CONTAINER" wp option get woocommerce_shop_page_id --allow-root 2>/dev/null | tr -d '\r')"
+SHOP_URL="${SITE_URL}/shop/"
+if [[ "$SHOP_ID" =~ ^[0-9]+$ ]]; then
+  SHOP_URL="$(docker exec "$CONTAINER" wp post url "$SHOP_ID" --allow-root 2>/dev/null | tr -d '\r')"
+fi
 CONTACT_ID="$(docker exec "$CONTAINER" wp post list --post_type=page --name=contacto --field=ID --allow-root 2>/dev/null | head -n1 | tr -d '\r')"
 if [[ -z "$CONTACT_ID" ]]; then
   CONTACT_ID="$(docker exec "$CONTAINER" wp post create \
@@ -117,7 +138,7 @@ docker exec "$CONTAINER" wp menu item add-post "$MENU_ID" "$HOME_ID" --title="In
 if [[ -n "$SHOP_ID" ]]; then
   docker exec "$CONTAINER" wp menu item add-post "$MENU_ID" "$SHOP_ID" --title="Tienda" --allow-root 2>/dev/null || true
 fi
-docker exec "$CONTAINER" wp menu item add-custom "$MENU_ID" "Categorías" "${SITE_URL}/#categorias" --allow-root 2>/dev/null || true
+docker exec "$CONTAINER" wp menu item add-custom "$MENU_ID" "Categorías" "$SHOP_URL" --allow-root 2>/dev/null || true
 docker exec "$CONTAINER" wp menu item add-post "$MENU_ID" "$CONTACT_ID" --title="Contacto" --allow-root 2>/dev/null || true
 
 docker exec "$CONTAINER" wp menu location assign "$MENU_ID" menu_1 --allow-root 2>/dev/null || true
