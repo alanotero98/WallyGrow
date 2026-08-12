@@ -31,6 +31,31 @@ function wally_grow_footer_page_link($path, $label) {
 }
 
 /**
+ * Public names of WooCommerce gateways explicitly enabled by the store owner.
+ *
+ * @return string[]
+ */
+function wally_grow_get_enabled_payment_method_names() {
+    if (!function_exists('WC') || !WC()->payment_gateways()) {
+        return array();
+    }
+
+    $names = array();
+    foreach (WC()->payment_gateways()->payment_gateways() as $gateway) {
+        if (!isset($gateway->enabled) || $gateway->enabled !== 'yes') {
+            continue;
+        }
+
+        $title = trim(wp_strip_all_tags((string) $gateway->get_title()));
+        if ($title !== '') {
+            $names[$title] = $title;
+        }
+    }
+
+    return array_values($names);
+}
+
+/**
  * Central footer content.
  *
  * Developers can adjust all footer labels and links here, or filter the array
@@ -94,13 +119,9 @@ function wally_grow_get_footer_content() {
         );
     }
 
-    $contact_items = array(
-        __('Buenos Aires, Argentina', 'wally-grow-child'),
-    );
-
-    $contact_email = defined('WALLY_GROW_CONTACT_EMAIL')
-        ? sanitize_email((string) WALLY_GROW_CONTACT_EMAIL)
-        : '';
+    $details = array();
+    $contact_items = array();
+    $contact_email = wally_grow_get_contact_email();
     if ($contact_email !== '') {
         $contact_items[] = sprintf(
             '<a href="mailto:%1$s">%2$s</a>',
@@ -109,15 +130,36 @@ function wally_grow_get_footer_content() {
         );
     }
 
-    $contact_items[] = __('Mercado Pago / Transferencia', 'wally-grow-child');
+    $whatsapp_url = wally_grow_get_whatsapp_url(
+        __('Hola Wally Grow, tengo una consulta.', 'wally-grow-child')
+    );
+    if ($whatsapp_url !== '') {
+        $contact_items[] = sprintf(
+            '<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+            esc_url($whatsapp_url),
+            esc_html__('WhatsApp', 'wally-grow-child')
+        );
+    }
 
-    $content = array(
-        'description' => __('Botanical Excellence. Tu socio profesional en el cultivo indoor y exterior. Tecnología, asesoramiento y calidad.', 'wally-grow-child'),
-        'columns' => $columns,
-        'contact' => array(
+    if ($contact_items) {
+        $details[] = array(
             'title' => __('Contacto', 'wally-grow-child'),
             'items' => $contact_items,
-        ),
+        );
+    }
+
+    $payment_methods = wally_grow_get_enabled_payment_method_names();
+    if ($payment_methods) {
+        $details[] = array(
+            'title' => __('Medios de pago', 'wally-grow-child'),
+            'items' => array_map('esc_html', $payment_methods),
+        );
+    }
+
+    $content = array(
+        'description' => __('Excelencia botánica. Tu aliado para el cultivo indoor y exterior, con tecnología, asesoramiento y calidad.', 'wally-grow-child'),
+        'columns' => $columns,
+        'details' => $details,
     );
 
     return apply_filters('wally_grow:footer:content', $content);
@@ -146,9 +188,16 @@ function wally_grow_render_global_footer() {
                             false,
                             array(
                                 'class' => 'wg-global-footer__logo',
-                                'alt' => $site_name,
+                                'alt' => '',
                                 'loading' => 'lazy',
                             )
+                        ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
+                    <?php else : ?>
+                        <?php
+                        echo wally_grow_get_brand_icon_markup(
+                            'wg-global-footer__logo',
+                            'lazy'
                         ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         ?>
                     <?php endif; ?>
@@ -168,21 +217,23 @@ function wally_grow_render_global_footer() {
                 </nav>
             <?php endforeach; ?>
 
-            <div class="wg-global-footer__column">
-                <h2><?php echo esc_html($content['contact']['title']); ?></h2>
-                <ul>
-                    <?php foreach ($content['contact']['items'] as $item) : ?>
-                        <li><?php echo wp_kses_post($item); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
+            <?php foreach ($content['details'] as $detail) : ?>
+                <div class="wg-global-footer__column">
+                    <h2><?php echo esc_html($detail['title']); ?></h2>
+                    <ul>
+                        <?php foreach ($detail['items'] as $item) : ?>
+                            <li><?php echo wp_kses_post($item); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endforeach; ?>
         </div>
 
         <div class="wg-global-footer__bottom">
             <p>
                 &copy; <?php echo esc_html(wp_date('Y')); ?>
                 <?php echo esc_html($site_name); ?>.
-                <?php esc_html_e('Botanical Excellence.', 'wally-grow-child'); ?>
+                <?php esc_html_e('Excelencia botánica.', 'wally-grow-child'); ?>
             </p>
         </div>
     </div>

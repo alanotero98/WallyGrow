@@ -62,6 +62,11 @@ if ($script:LastDockerExit -ne 0) {
     if ($script:LastDockerExit -ne 0) { throw "Falló wp core install" }
 }
 
+Write-Host "==> Idioma español (Argentina)..." -ForegroundColor Cyan
+Get-WpOut language core install es_AR --activate | Out-Host
+if ($script:LastDockerExit -ne 0) { throw "No se pudo activar el idioma es_AR" }
+Get-WpOut option update WPLANG es_AR | Out-Null
+
 Write-Host "==> Permalink structure..." -ForegroundColor Cyan
 Get-WpOut rewrite structure "/%postname%/" | Out-Null
 Get-WpOut rewrite flush | Out-Null
@@ -73,7 +78,7 @@ if ($script:LastDockerExit -ne 0) { throw "No se pudo activar wally-grow-child" 
 
 Write-Host "==> WooCommerce..." -ForegroundColor Cyan
 Get-WpOut plugin install woocommerce --activate | Out-Host
-Get-WpOut option update woocommerce_store_address "Buenos Aires" | Out-Null
+Get-WpOut language plugin install woocommerce es_AR | Out-Host
 Get-WpOut option update woocommerce_default_country "AR" | Out-Null
 Get-WpOut option update woocommerce_currency "ARS" | Out-Null
 Get-WpOut option update woocommerce_coming_soon "no" | Out-Null
@@ -82,10 +87,23 @@ Get-WpOut option update woocommerce_weight_unit "kg" | Out-Null
 Get-WpOut option update woocommerce_dimension_unit "cm" | Out-Null
 Get-WpOut wc tool run install_pages --user=1 | Out-Null
 
+Write-Host "==> Títulos de páginas WooCommerce..." -ForegroundColor Cyan
+@(
+    @{ option = "woocommerce_shop_page_id"; title = "Tienda" },
+    @{ option = "woocommerce_cart_page_id"; title = "Carrito" },
+    @{ option = "woocommerce_checkout_page_id"; title = "Finalizar compra" },
+    @{ option = "woocommerce_myaccount_page_id"; title = "Mi cuenta" }
+) | ForEach-Object {
+    $pageId = Get-WpOut option get $_.option
+    if ($pageId -match "^\d+$") {
+        Get-WpOut post update $pageId --post_title="$($_.title)" | Out-Null
+    }
+}
+
 # Scaffolding técnico: métodos listos para que el cliente complete datos (sin inventar cuentas ni tarifas).
 Invoke-DockerExec @(
     "wp", "eval",
-    "update_option('woocommerce_bacs_settings', array('enabled'=>'yes','title'=>'Transferencia bancaria','description'=>'Completar CBU/alias en WooCommerce > Ajustes > Pagos.','instructions'=>'')); update_option('woocommerce_cod_settings', array('enabled'=>'no'));",
+    "update_option('woocommerce_bacs_settings', array('enabled'=>'no','title'=>'Transferencia bancaria','description'=>'Completar CBU/alias en WooCommerce > Ajustes > Pagos.','instructions'=>'')); update_option('woocommerce_cod_settings', array('enabled'=>'no'));",
     "--allow-root"
 ) | Out-Null
 
@@ -137,6 +155,7 @@ Get-WpOut option update show_on_front page | Out-Null
 Get-WpOut option update page_on_front $homeId | Out-Null
 
 $shopId = Get-WpOut option get woocommerce_shop_page_id
+$shopUrl = if ($shopId) { Get-WpOut post url $shopId } else { "$SiteUrl/shop/" }
 $contactId = Get-WpOut post list --post_type=page --name=contacto --field=ID
 if (-not $contactId) {
     $contactId = Get-WpOut post create `
@@ -157,7 +176,7 @@ Get-WpOut menu item add-post $menuId $homeId --title="Inicio" | Out-Null
 if ($shopId) {
     Get-WpOut menu item add-post $menuId $shopId --title="Tienda" | Out-Null
 }
-Get-WpOut menu item add-custom $menuId "Categorías" "$SiteUrl/#categorias" | Out-Null
+Get-WpOut menu item add-custom $menuId "Categorías" $shopUrl | Out-Null
 Get-WpOut menu item add-post $menuId $contactId --title="Contacto" | Out-Null
 
 Get-WpOut menu location assign $menuId menu_1 | Out-Null

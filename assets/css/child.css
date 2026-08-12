@@ -150,6 +150,31 @@ a:focus {
 	border-radius: 4px;
 }
 
+:where(a.button, button.button, input.button, input[type="submit"]) {
+	background-color: var(--wg-green) !important;
+	border-color: var(--wg-green) !important;
+	color: #fff !important;
+	min-height: 44px;
+}
+
+:where(a.button, button.button, input.button, input[type="submit"]):hover {
+	background-color: var(--wg-green-dark) !important;
+	border-color: var(--wg-green-dark) !important;
+	color: #fff !important;
+}
+
+:where(a.button.wg-button--secondary, button.button.wg-button--secondary) {
+	background-color: #fff !important;
+	border-color: var(--wg-border) !important;
+	color: var(--wg-ink) !important;
+}
+
+:where(a.button.wg-button--secondary, button.button.wg-button--secondary):hover {
+	background-color: var(--wg-surface) !important;
+	border-color: var(--wg-green-dark) !important;
+	color: var(--wg-green-dark) !important;
+}
+
 :where(button, .button, input[type="button"], input[type="submit"], .wp-element-button):focus-visible,
 :where(a, input, select, textarea):focus-visible {
 	outline: 2px solid var(--wg-green-dark);
@@ -188,6 +213,70 @@ a:focus {
 
 :where(.ct-cart-item, .ct-header-search, .ct-toggle, .ct-social-box):hover {
 	color: var(--wg-green-dark);
+}
+
+:where(
+	.ct-header .menu > .menu-item > a,
+	.ct-header-search,
+	.ct-header-search button,
+	.ct-cart-item,
+	.ct-account-item,
+	.ct-toggle,
+	.ct-toggle-close
+) {
+	align-items: center;
+	justify-content: center;
+	min-height: 46px !important;
+	min-width: 46px !important;
+}
+
+.wg-menu-item > a,
+.mobile-menu .menu-item > a,
+.ct-panel .ct-menu-link,
+.ct-panel .menu-item > a {
+	align-items: center;
+	box-sizing: border-box;
+	display: flex;
+	gap: 7px;
+	min-height: 46px !important;
+}
+
+.wg-cart-status {
+	display: inline-flex;
+}
+
+.wg-cart-count {
+	align-items: center;
+	background: var(--wg-green);
+	border-radius: 999px;
+	color: #fff;
+	display: inline-flex;
+	font-size: 11px;
+	font-weight: 700;
+	height: 20px;
+	justify-content: center;
+	line-height: 1;
+	min-width: 20px;
+	padding: 0 5px;
+}
+
+.wg-cart-count--empty {
+	display: none;
+}
+
+body:not(.wp-custom-logo) .site-branding .site-title > a {
+	align-items: center;
+	display: inline-flex;
+	gap: 10px;
+	white-space: nowrap;
+}
+
+body:not(.wp-custom-logo) .site-branding .site-title > a::before {
+	background: url("../images/branding/wally-isotipo.png") center / contain no-repeat;
+	content: "";
+	flex: 0 0 clamp(42px, 4vw, 48px);
+	height: clamp(42px, 4vw, 48px);
+	width: clamp(42px, 4vw, 48px);
 }
 
 .home [data-header*="type-1"] .ct-header {
@@ -294,6 +383,14 @@ a:focus {
 .wally-home .wp-block-button__link:hover {
 	background: var(--wg-green-dark);
 	border-color: var(--wg-green-dark);
+	color: #fff;
+}
+
+.wally-home
+	.wp-block-button:not(.is-style-outline, .wg-whatsapp-button, .wg-cta__secondary)
+	.wp-block-button__link {
+	background: var(--wg-green);
+	border-color: var(--wg-green);
 	color: #fff;
 }
 
@@ -852,15 +949,15 @@ a:focus {
 }
 
 .wally-home .wg-cta .wg-cta__primary .wp-block-button__link {
-	background: #fff;
+	background: var(--wg-green);
 	border-color: #fff;
-	color: var(--wg-green-dark);
+	color: #fff;
 }
 
 .wally-home .wg-cta .wg-cta__primary .wp-block-button__link:hover {
-	background: var(--wg-surface);
-	border-color: var(--wg-surface);
-	color: var(--wg-green-dark);
+	background: var(--wg-green-dark);
+	border-color: #fff;
+	color: #fff;
 }
 
 .wally-home .wg-cta .wg-cta__secondary .wp-block-button__link {
@@ -1049,6 +1146,149 @@ a:focus {
 	background: rgba(22, 101, 52, .08);
 }
 
+.wg-system-page,
+.wg-contact-page {
+	box-sizing: border-box;
+	margin: 0 auto;
+	max-width: 920px;
+	padding: clamp(64px, 10vw, 120px) 24px;
+}
+
+.wg-system-page {
+	display: grid;
+	min-height: 62vh;
+	place-items: center;
+	text-align: center;
+}
+
+.wg-system-page__content {
+	max-width: 680px;
+}
+
+.wg-system-page h1,
+.wg-contact-page h2,
+.wg-empty-state h2 {
+	font-size: clamp(1.8rem, 5vw, 2.75rem);
+	margin: 0 0 16px;
+}
+
+.wg-system-page__content > p:not(.wg-eyebrow),
+.wg-contact-page__intro > p:not(.wg-eyebrow),
+.wg-empty-state > p:not(.wg-eyebrow) {
+	color: var(--wg-muted);
+	font-size: 1.05rem;
+}
+
+.wg-system-page__actions,
+.wg-empty-state__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	justify-content: center;
+	margin-top: 28px;
+}
+
+.wg-system-page__actions .button,
+.wg-empty-state__actions .button,
+.wg-contact-page__shop {
+	align-items: center;
+	display: inline-flex;
+	justify-content: center;
+	min-height: 44px;
+}
+
+.wg-contact-page {
+	padding-top: 32px;
+}
+
+.wg-contact-page__intro {
+	max-width: 680px;
+}
+
+.wg-contact-page__methods {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+	margin: 36px 0 28px;
+}
+
+.wg-contact-page__method,
+.wg-contact-page__notice {
+	background: var(--wg-surface);
+	border: 1px solid var(--wg-border);
+	border-radius: 8px;
+	box-sizing: border-box;
+	padding: 24px;
+}
+
+.wg-contact-page__method {
+	color: var(--wg-ink);
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-height: 110px;
+	text-decoration: none;
+}
+
+.wg-contact-page__method:hover {
+	border-color: var(--wg-green);
+	color: var(--wg-green-dark);
+}
+
+.wg-contact-page__method span,
+.wg-contact-page__notice p {
+	color: var(--wg-muted);
+}
+
+.wg-contact-page__notice {
+	margin: 36px 0 28px;
+	max-width: 680px;
+}
+
+.wg-contact-page__notice h3,
+.wg-contact-page__notice p {
+	margin: 0;
+}
+
+.wg-contact-page__notice p {
+	margin-top: 8px;
+}
+
+.wg-empty-state {
+	background: var(--wg-surface);
+	border: 1px solid var(--wg-border);
+	border-radius: 8px;
+	box-sizing: border-box;
+	margin: 32px auto 64px;
+	max-width: 840px;
+	padding: clamp(32px, 6vw, 56px);
+	text-align: center;
+}
+
+.wg-empty-state__categories {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin-top: 24px;
+}
+
+.wg-empty-state__categories a {
+	align-items: center;
+	border: 1px solid var(--wg-border);
+	border-radius: 999px;
+	color: var(--wg-ink);
+	display: inline-flex;
+	min-height: 44px;
+	padding: 8px 16px;
+	text-decoration: none;
+}
+
+.wg-empty-state__categories a:hover {
+	border-color: var(--wg-green);
+	color: var(--wg-green-dark);
+}
+
 .wg-global-footer {
 	background: var(--wg-surface);
 	box-sizing: border-box;
@@ -1082,9 +1322,10 @@ a:focus {
 }
 
 .wg-global-footer__logo {
-	height: 36px;
+	flex: 0 0 40px;
+	height: 40px;
 	object-fit: contain;
-	width: auto;
+	width: 40px;
 }
 
 .wg-global-footer h2 {
@@ -1309,6 +1550,24 @@ a:focus {
 
 	.wg-category h3 {
 		font-size: 22px;
+	}
+
+	.wg-system-page,
+	.wg-contact-page {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	.wg-system-page__actions,
+	.wg-empty-state__actions {
+		flex-direction: column;
+	}
+
+	.wg-system-page__actions .button,
+	.wg-empty-state__actions .button,
+	.wg-contact-page__shop {
+		box-sizing: border-box;
+		width: 100%;
 	}
 
 	.wg-global-footer__grid {

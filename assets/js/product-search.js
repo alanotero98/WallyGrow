@@ -35,16 +35,32 @@
 			setExpanded(false);
 		};
 
-		const showMessage = (message) => {
+		const showMessage = (message, action = null) => {
 			dropdown.replaceChildren();
 			const paragraph = document.createElement("p");
 			paragraph.className = "wg-product-search__message";
 			paragraph.setAttribute("role", "status");
 			paragraph.textContent = message;
 			dropdown.append(paragraph);
+
+			if (action?.url && action?.label) {
+				const link = document.createElement("a");
+				link.className = "wg-product-search__message-action";
+				link.href = action.url;
+				link.textContent = action.label;
+				dropdown.append(link);
+			}
+
 			options = [];
 			setExpanded(true);
 			announce(message);
+		};
+
+		const showMinimumMessage = () => {
+			showMessage(
+				config.messages?.tooShort || "Escribí al menos 2 caracteres para buscar.",
+			);
+			input.focus();
 		};
 
 		const renderResults = (products) => {
@@ -52,7 +68,10 @@
 			activeIndex = -1;
 
 			if (!products.length) {
-				showMessage(config.messages?.empty || "No encontramos productos.");
+				showMessage(config.messages?.empty || "No encontramos productos.", {
+					url: config.shopUrl,
+					label: config.messages?.browseShop || "Ver toda la tienda",
+				});
 				return;
 			}
 
@@ -199,8 +218,13 @@
 		form.addEventListener("submit", (event) => {
 			if (input.value.trim().length < minimum) {
 				event.preventDefault();
-				input.focus();
+				showMinimumMessage();
 			}
+		});
+
+		input.addEventListener("invalid", (event) => {
+			event.preventDefault();
+			showMinimumMessage();
 		});
 
 		document.addEventListener("pointerdown", (event) => {
