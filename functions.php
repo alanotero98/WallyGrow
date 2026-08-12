@@ -43,6 +43,14 @@ if (!defined('WALLY_GROW_GOOGLE_REVIEWS_URL')) {
     define('WALLY_GROW_GOOGLE_REVIEWS_URL', '');
 }
 
+/**
+ * Optional public contact email for the footer. Leave empty to hide the mailto row.
+ * Override in wp-config.php when the client provides the definitive address.
+ */
+if (!defined('WALLY_GROW_CONTACT_EMAIL')) {
+    define('WALLY_GROW_CONTACT_EMAIL', '');
+}
+
 require_once get_stylesheet_directory() . '/inc/contact.php';
 
 if (!function_exists('wally_grow_child_setup')) {
@@ -146,4 +154,5 @@ add_action('wp', function () {
 
 require_once get_stylesheet_directory() . '/inc/setup.php';
 require_once get_stylesheet_directory() . '/inc/woocommerce.php';
+require_once get_stylesheet_directory() . '/inc/single-product.php';
 require_once get_stylesheet_directory() . '/inc/footer.php';
