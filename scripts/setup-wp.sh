@@ -40,12 +40,46 @@ docker exec "$CONTAINER" wp theme activate wally-grow-child --allow-root
 
 echo "==> WooCommerce..."
 docker exec "$CONTAINER" wp plugin install woocommerce --activate --allow-root
-docker exec "$CONTAINER" wp option update woocommerce_store_address "Santiago" --allow-root
-docker exec "$CONTAINER" wp option update woocommerce_default_country "CL" --allow-root
-docker exec "$CONTAINER" wp option update woocommerce_currency "CLP" --allow-root
+docker exec "$CONTAINER" wp option update woocommerce_store_address "Buenos Aires" --allow-root
+docker exec "$CONTAINER" wp option update woocommerce_default_country "AR" --allow-root
+docker exec "$CONTAINER" wp option update woocommerce_currency "ARS" --allow-root
 docker exec "$CONTAINER" wp option update woocommerce_coming_soon "no" --allow-root
 docker exec "$CONTAINER" wp option update woocommerce_store_pages_only "no" --allow-root
+docker exec "$CONTAINER" wp option update woocommerce_weight_unit "kg" --allow-root
+docker exec "$CONTAINER" wp option update woocommerce_dimension_unit "cm" --allow-root
 docker exec "$CONTAINER" wp wc tool run install_pages --user=1 --allow-root 2>/dev/null || true
+
+docker exec "$CONTAINER" wp eval 'update_option("woocommerce_bacs_settings", array("enabled"=>"yes","title"=>"Transferencia bancaria","description"=>"Completar CBU/alias en WooCommerce > Ajustes > Pagos.","instructions"=>"")); update_option("woocommerce_cod_settings", array("enabled"=>"no"));' --allow-root
+
+echo "==> Categorías base (vacías, slugs del tema)..."
+for pair in "Iluminación:iluminacion" "Nutrientes:nutrientes" "Carpas:carpas" "Accesorios:accesorios"; do
+  name="${pair%%:*}"
+  slug="${pair##*:}"
+  if [[ -z "$(docker exec "$CONTAINER" wp term list product_cat --slug="$slug" --field=term_id --allow-root 2>/dev/null | tr -d '\r')" ]]; then
+    docker exec "$CONTAINER" wp term create product_cat "$name" --slug="$slug" --allow-root >/dev/null
+  fi
+done
+
+echo "==> Páginas legales en borrador (contenido del cliente)..."
+stub='<!-- Completar contenido con el cliente antes de publicar. -->'
+while IFS='|' read -r title slug; do
+  if [[ -z "$(docker exec "$CONTAINER" wp post list --post_type=page --name="$slug" --field=ID --allow-root 2>/dev/null | tr -d '\r')" ]]; then
+    docker exec "$CONTAINER" wp post create \
+      --post_type=page \
+      --post_title="$title" \
+      --post_name="$slug" \
+      --post_status=draft \
+      --post_content="$stub" \
+      --porcelain \
+      --allow-root >/dev/null
+  fi
+done <<'PAGES'
+Preguntas frecuentes|preguntas-frecuentes
+Política de envíos|politica-de-envios
+Términos y condiciones|terminos-y-condiciones
+Política de privacidad|politica-de-privacidad
+Soporte técnico|soporte-tecnico
+PAGES
 
 echo "==> Página de inicio estática..."
 HOME_ID="$(docker exec "$CONTAINER" wp post list --post_type=page --name=inicio --field=ID --allow-root 2>/dev/null | head -n1 | tr -d '\r')"
@@ -95,3 +129,4 @@ echo ""
 echo "Listo. Sitio: $SITE_URL"
 echo "Admin:  $SITE_URL/wp-admin (admin / admin)"
 echo "phpMyAdmin: http://localhost:8083"
+echo "Tienda: AR / ARS. Legales en borrador. WhatsApp/productos/pagos: ver docs/desarrollo/checklist-cliente.md"

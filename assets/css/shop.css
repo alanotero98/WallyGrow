@@ -580,3 +580,17 @@ body.woocommerce-archive #sidebar .price_slider_amount .button:hover {
 		grid-column: 2;
 	}
 }
+
+/* Compact product search when used as theme/header search form. */
+.ct-header .wg-product-search,
+.ct-search-form .wg-product-search,
+.header-search-modal .wg-product-search {
+	width: min(100%, 360px);
+	margin: 0;
+}
+
+.ct-header .wg-product-search__dropdown,
+.ct-search-form .wg-product-search__dropdown,
+.header-search-modal .wg-product-search__dropdown {
+	z-index: 40;
+}

@@ -47,12 +47,39 @@ function wally_grow_enqueue_product_search_assets() {
 /**
  * Future header integrations can return true from this filter to preload the
  * component assets in wp_head before rendering its markup.
+ *
+ * By default the product search replaces the theme search form on the front
+ * end, so assets load on public requests (not in wp-admin).
  */
+add_filter('wally_grow:product-search:enqueue', function ($enqueue) {
+    if ($enqueue) {
+        return true;
+    }
+
+    return !is_admin();
+});
+
 add_action('wp_enqueue_scripts', function () {
     if (apply_filters('wally_grow:product-search:enqueue', false)) {
         wally_grow_enqueue_product_search_assets();
     }
 }, 125);
+
+/**
+ * Prefer the product autocomplete wherever WordPress/Blocksy request a search form.
+ *
+ * @param string $form Default search form markup.
+ * @return string
+ */
+function wally_grow_filter_search_form($form) {
+    if (is_admin() || !function_exists('WC')) {
+        return $form;
+    }
+
+    wally_grow_enqueue_product_search_assets();
+    return wally_grow_get_product_search_markup();
+}
+add_filter('get_search_form', 'wally_grow_filter_search_form', 20);
 
 function wally_grow_get_product_search_markup() {
     $search_id = wp_unique_id('wg-product-search-');
